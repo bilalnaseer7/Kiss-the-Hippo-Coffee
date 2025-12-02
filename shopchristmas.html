@@ -31,6 +31,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <!-- Top Header Bar -->
@@ -117,106 +118,92 @@
         </div>
     </div>
 
-    <!-- Hero Section -->
-    <section id="hero" class="hero-section">
-        <div class="hero-content">
-            <h1 class="hero-title">Kiss the Hippo. Boldly Brewed.</h1>
-            <p class="hero-tagline">Every bean has a story, every cup an experience. We roast with passion, serve with purpose, and never compromise on quality.</p>
-        </div>
-
-        <div class="hero-images">
-            <div class="hero-image-left">
-                <div class="hero-img"></div>
-                <p class="hero-image-text">Experience origin<br>to obsession in every<br>sip.</p>
-            </div>
-            <div class="hero-image-right">
-                <div class="hero-img"></div>
-                <p class="hero-image-text">Step inside the<br>world of Kiss the Hippo.</p>
-            </div>
-        </div>
+    <!-- Trail Section -->
+    <section id="hero" class="trail-section">
+        <nav class="trail-content">
+            <a href="index.html">Home</a>
+            <span>></span>
+            <a href="coffeebean.html">Shop Coffee</a>
+            <span>></span>
+            <span>Christmas Blend</span>
+        </nav>
     </section>
 
-    <!-- Our Difference Section -->
-    <section id="difference" class="difference-section">
-        <div class="difference-header">
-            <h2 class="difference-title">From Origin to Obsession</h2>
-            <p class="difference-intro">At Kiss the Hippo, coffee is more than a drink — it's a craft. We source the finest beans from sustainable farms, roast them to perfection in-house, and serve each cup with care. From the farmer's hands to your morning ritual, every step is intentional.</p>
+    <!-- Detailed Coffee Bean Selection Section -->
+    <section class="coffee-detail">
+        <div class="coffee-layout">
+            <div class="coffee-image-wrap">
+                <img src="images/christmasblend.png" alt="Christmas Blend Coffee Beans">
+            </div>
+
+            <div class="coffee-detail-info">
+                <h2 class="coffee-detail-title">Christmas Blend</h2>
+                <p class="coffee-price">$35.00</p>
+
+                <div class="coffee-flavor">
+                    <h4 class="flavor-title">Flavor Notes</h4>
+                    <p>Cinnamon, Strawberry, Milk Chocolate</p>
+                </div>
+
+                <div class="acidity-dots">
+                    <div class="dots">
+                        <span class="filled-dot"></span>
+                        <span class="filled-dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!--Christmas blend form-->
+            <form id="christmasblendform" class="form">
+
+                <!--Bag size form -->
+                <div class="options">
+                    <h3 class="section-title">Bag Size</h3>
+                    <div class="sizes">
+                        <label class="sizebutton">
+                            <input type="radio" name="bagsize" value="200g" checked>
+                            <span>200g</span> 
+                        </label>
+                        <label class="sizebutton">
+                            <input type="radio" name="bagsize" value="500g">
+                            <span>500g</span> 
+                        </label>
+                        <label class="sizebutton">
+                            <input type="radio" name="bagsize" value="700g">
+                            <span>700g</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!--Grind form-->
+                <div class="options">
+                    <h3 class="section-title">Grind</h3>
+                    <select name="grind" id="grind" class="select-input">
+                        <option value="Espresso">Espresso</option>
+                        <option value="Filter">Filter</option>
+                        <option value="Whole Bean">Whole Bean</option>
+                        <option value="French Press">French Press</option>
+                    </select>
+                </div>
+
+                <!--Quatntity form-->
+                <div class="options">
+                    <h3 class="section-title">Quantity</h3>
+                    <div class="quantities">
+                        <input type="number" id="quantity" name="quantity" class="quantinput" min="1" value="1">
+                    </div>
+                </div>
+
+                <!--Add button-->
+                <button type="submit" class="addbutton">
+                    Add to Cart
+                </button>
+            </form>
         </div>
-
-        <div class="difference-cards">
-            <div class="difference-card difference-card-first">
-                <h3 class="card-title">Source</h3>
-                <p class="card-text">We partner directly with farmers across Ethiopia, Colombia, and beyond. Each origin is selected for its unique character and sustainable practices — because great coffee starts with great relationships.</p>
-            </div>
-
-            <div class="difference-card">
-                <h3 class="card-title">Roast</h3>
-                <p class="card-text">Our master roasters craft each batch with precision. We explore light, medium, and dark profiles to unlock every bean's potential — where science meets artistry, and flavor comes alive.</p>
-            </div>
-
-            <div class="difference-card">
-                <h3 class="card-title">Serve</h3>
-                <p class="card-text">The final moment matters most. Whether poured by our baristas or brewed at home, every cup completes the journey — a ritual of warmth, quality, and connection.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Featured Products Section -->
-    <section id="products" class="products-section">
-        <div class="products-header">
-            <h2 class="products-title">Explore Our Collection</h2>
-            <p class="products-intro">From single-origin beans to premium brewing gear, find everything you need for the perfect cup.</p>
-        </div>
-
-        <div class="products-grid">
-            <div class="product-card">
-                <div class="product-image">
-                    <div class="product-img"></div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">Coffee Beans</h3>
-                    <p class="product-desc">Single-origin and signature blends, freshly roasted for maximum flavor.</p>
-                    <span class="product-link">Shop Beans</span>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">
-                    <div class="product-img"></div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">Brewing Equipment</h3>
-                    <p class="product-desc">Pour-overs, French presses, grinders, and tools for the home barista.</p>
-                    <span class="product-link">Shop Equipment</span>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">
-                    <div class="product-img"></div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">Merchandise</h3>
-                    <p class="product-desc">Mugs, apparel, and accessories for true coffee lovers.</p>
-                    <span class="product-link">Shop Merch</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Mission Statement Section -->
-    <section id="mission" class="mission-section">
-        <div class="mission-content">
-            <div class="mission-image">
-                <div class="mission-img"></div>
-            </div>
-            <div class="mission-text">
-                <h2 class="mission-title">We Rise by Lifting Others</h2>
-                <p class="mission-desc">For every bag sold, we reinvest in the farming communities that make our coffee possible. Better wages, sustainable practices, and a future where everyone in the chain thrives.</p>
-                <span class="mission-link">Learn Our Story</span>
-            </div>
-        </div>
-    </section>
+     
 
     <!-- Footer -->
     <footer class="footer">

@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kiss the Hippo Coffee | Boldly Brewed</title>
+    <title>Coffee Shop Menu | Kiss the Hippo Coffee</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="menu.css">
     <style>
         /* Placeholder styles for preview - remove when adding real images */
         .logo-img {
@@ -20,13 +21,13 @@
             border: 2px solid #1a1a1a;
             border-radius: 3px;
         }
-        .hero-img {
+        .menu-hero-img {
             background-color: #3d3225;
         }
-        .product-img {
+        .menu-card-img {
             background-color: #8B7355;
         }
-        .mission-img {
+        .menu-special-img {
             background-color: #6b5d4d;
         }
     </style>
@@ -118,102 +119,95 @@
     </div>
 
     <!-- Hero Section -->
-    <section id="hero" class="hero-section">
-        <div class="hero-content">
-            <h1 class="hero-title">Kiss the Hippo. Boldly Brewed.</h1>
-            <p class="hero-tagline">Every bean has a story, every cup an experience. We roast with passion, serve with purpose, and never compromise on quality.</p>
+    <section class="menu-hero">
+        <div class="menu-hero-content">
+            <h1 class="menu-hero-title">Our Coffee Menu</h1>
+            <p class="menu-hero-tagline">Crafted with passion, perfected in every cup.</p>
         </div>
+        <div class="menu-hero-image">
+            <div class="menu-hero-img"></div>
+        </div>
+    </section>
 
-        <div class="hero-images">
-            <div class="hero-image-left">
-                <div class="hero-img"></div>
-                <p class="hero-image-text">Experience origin<br>to obsession in every<br>sip.</p>
+    <!-- Coffee Drinks Section -->
+    <section class="menu-section">
+        <h2 class="menu-section-title">Coffee & Espresso</h2>
+        <p class="menu-section-intro">
+            From bold espressos to velvety lattes — discover drinks crafted for every taste.
+        </p>
+
+        <div class="menu-grid">
+            <div class="menu-card">
+                <div class="menu-card-img"></div>
+                <h3 class="menu-card-name">Espresso</h3>
+                <p class="menu-card-desc">Rich, bold, and intensely aromatic.</p>
+                <span class="menu-card-price">$4.00</span>
             </div>
-            <div class="hero-image-right">
-                <div class="hero-img"></div>
-                <p class="hero-image-text">Step inside the<br>world of Kiss the Hippo.</p>
+
+            <div class="menu-card">
+                <div class="menu-card-img"></div>
+                <h3 class="menu-card-name">Cappuccino</h3>
+                <p class="menu-card-desc">A beautiful balance of espresso and foam.</p>
+                <span class="menu-card-price">$5.00</span>
+            </div>
+
+            <div class="menu-card">
+                <div class="menu-card-img"></div>
+                <h3 class="menu-card-name">Latte</h3>
+                <p class="menu-card-desc">Smooth, creamy, and endlessly comforting.</p>
+                <span class="menu-card-price">$5.50</span>
+            </div>
+
+            <div class="menu-card">
+                <div class="menu-card-img"></div>
+                <h3 class="menu-card-name">Mocha</h3>
+                <p class="menu-card-desc">Chocolate meets espresso in a perfect blend.</p>
+                <span class="menu-card-price">$6.00</span>
             </div>
         </div>
     </section>
 
-    <!-- Our Difference Section -->
-    <section id="difference" class="difference-section">
-        <div class="difference-header">
-            <h2 class="difference-title">From Origin to Obsession</h2>
-            <p class="difference-intro">At Kiss the Hippo, coffee is more than a drink — it's a craft. We source the finest beans from sustainable farms, roast them to perfection in-house, and serve each cup with care. From the farmer's hands to your morning ritual, every step is intentional.</p>
-        </div>
+    <!-- Pastries Section -->
+    <section class="menu-section light-bg">
+        <h2 class="menu-section-title">Pastries & Bakery</h2>
+        <p class="menu-section-intro">
+            Freshly baked every morning using local ingredients.
+        </p>
 
-        <div class="difference-cards">
-            <div class="difference-card difference-card-first">
-                <h3 class="card-title">Source</h3>
-                <p class="card-text">We partner directly with farmers across Ethiopia, Colombia, and beyond. Each origin is selected for its unique character and sustainable practices — because great coffee starts with great relationships.</p>
+        <div class="menu-grid">
+            <div class="menu-card">
+                <div class="menu-card-img"></div>
+                <h3 class="menu-card-name">Croissant</h3>
+                <p class="menu-card-desc">Golden, flaky, and buttery.</p>
+                <span class="menu-card-price">$3.50</span>
             </div>
 
-            <div class="difference-card">
-                <h3 class="card-title">Roast</h3>
-                <p class="card-text">Our master roasters craft each batch with precision. We explore light, medium, and dark profiles to unlock every bean's potential — where science meets artistry, and flavor comes alive.</p>
+            <div class="menu-card">
+                <div class="menu-card-img"></div>
+                <h3 class="menu-card-name">Blueberry Muffin</h3>
+                <p class="menu-card-desc">Soft, sweet, and filled with berries.</p>
+                <span class="menu-card-price">$3.00</span>
             </div>
 
-            <div class="difference-card">
-                <h3 class="card-title">Serve</h3>
-                <p class="card-text">The final moment matters most. Whether poured by our baristas or brewed at home, every cup completes the journey — a ritual of warmth, quality, and connection.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Featured Products Section -->
-    <section id="products" class="products-section">
-        <div class="products-header">
-            <h2 class="products-title">Explore Our Collection</h2>
-            <p class="products-intro">From single-origin beans to premium brewing gear, find everything you need for the perfect cup.</p>
-        </div>
-
-        <div class="products-grid">
-            <div class="product-card">
-                <div class="product-image">
-                    <div class="product-img"></div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">Coffee Beans</h3>
-                    <p class="product-desc">Single-origin and signature blends, freshly roasted for maximum flavor.</p>
-                    <span class="product-link">Shop Beans</span>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">
-                    <div class="product-img"></div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">Brewing Equipment</h3>
-                    <p class="product-desc">Pour-overs, French presses, grinders, and tools for the home barista.</p>
-                    <span class="product-link">Shop Equipment</span>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">
-                    <div class="product-img"></div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">Merchandise</h3>
-                    <p class="product-desc">Mugs, apparel, and accessories for true coffee lovers.</p>
-                    <span class="product-link">Shop Merch</span>
-                </div>
+            <div class="menu-card">
+                <div class="menu-card-img"></div>
+                <h3 class="menu-card-name">Chocolate Cake</h3>
+                <p class="menu-card-desc">Decadent and rich with dark cocoa.</p>
+                <span class="menu-card-price">$4.00</span>
             </div>
         </div>
     </section>
 
-    <!-- Mission Statement Section -->
-    <section id="mission" class="mission-section">
-        <div class="mission-content">
-            <div class="mission-image">
-                <div class="mission-img"></div>
-            </div>
-            <div class="mission-text">
-                <h2 class="mission-title">We Rise by Lifting Others</h2>
-                <p class="mission-desc">For every bag sold, we reinvest in the farming communities that make our coffee possible. Better wages, sustainable practices, and a future where everyone in the chain thrives.</p>
-                <span class="mission-link">Learn Our Story</span>
+    <!-- Special Items -->
+    <section class="menu-special-section">
+        <div class="menu-special-content">
+            <div class="menu-special-img"></div>
+            <div class="menu-special-text">
+                <h2 class="menu-special-title">Seasonal Special: Gingerbread Latte</h2>
+                <p class="menu-special-desc">
+                    Warm spices, velvety milk, and our signature espresso — the perfect holiday drink.
+                </p>
+                <span class="menu-special-price">$6.50</span>
             </div>
         </div>
     </section>
