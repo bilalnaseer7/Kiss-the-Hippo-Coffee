@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coffee Shop Menu | Kiss the Hippo Coffee</title>
+    <title>Kiss the Hippo Coffee | Boldly Brewed</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="menu.css">
     <style>
         /* Placeholder styles for preview - remove when adding real images */
         .logo-img {
@@ -21,17 +20,18 @@
             border: 2px solid #1a1a1a;
             border-radius: 3px;
         }
-        .menu-hero-img {
+        .hero-img {
             background-color: #3d3225;
         }
-        .menu-card-img {
+        .product-img {
             background-color: #8B7355;
         }
-        .menu-special-img {
+        .mission-img {
             background-color: #6b5d4d;
         }
     </style>
 </head>
+
 <body>
 
     <!-- Top Header Bar -->
@@ -118,99 +118,92 @@
         </div>
     </div>
 
-    <!-- Hero Section -->
-    <section class="menu-hero">
-        <div class="menu-hero-content">
-            <h1 class="menu-hero-title">Our Coffee Menu</h1>
-            <p class="menu-hero-tagline">Crafted with passion, perfected in every cup.</p>
-        </div>
-        <div class="menu-hero-image">
-            <div class="menu-hero-img"></div>
-        </div>
+    <!-- Trail Section -->
+    <section id="hero" class="trail-section">
+        <nav class="trail-content">
+            <a href="index.html">Home</a>
+            <span>></span>
+            <a href="coffeebean.html">Shop Coffee</a>
+            <span>></span>
+            <span>Honduras, Nancy Parainema Blend</span>
+        </nav>
     </section>
 
-    <!-- Coffee Drinks Section -->
-    <section class="menu-section">
-        <h2 class="menu-section-title">Coffee & Espresso</h2>
-        <p class="menu-section-intro">
-            From bold espressos to velvety lattes — discover drinks crafted for every taste.
-        </p>
-
-        <div class="menu-grid">
-            <div class="menu-card">
-                <div class="menu-card-img"></div>
-                <h3 class="menu-card-name">Espresso</h3>
-                <p class="menu-card-desc">Rich, bold, and intensely aromatic.</p>
-                <span class="menu-card-price">$4.00</span>
+    <!-- Detailed Coffee Bean Selection Section -->
+    <section class="coffee-detail">
+        <div class="coffee-layout">
+            <div class="coffee-image-wrap">
+                <img src="images/NancyP.png" alt="Nancy Parainema Coffee Blend">
             </div>
 
-            <div class="menu-card">
-                <div class="menu-card-img"></div>
-                <h3 class="menu-card-name">Cappuccino</h3>
-                <p class="menu-card-desc">A beautiful balance of espresso and foam.</p>
-                <span class="menu-card-price">$5.00</span>
+            <div class="coffee-detail-info">
+                <h2 class="coffee-detail-title">Honduras, Nancy Parainema Blend</h2>
+                <p class="coffee-price">$40.00</p>
+
+                <div class="coffee-flavor">
+                    <h4 class="flavor-title">Flavor Notes</h4>
+                    <p>Star Fruit, Cashew, Brown Sugar</p>
+                </div>
+
+                <div class="acidity-dots">
+                    <div class="dots">
+                        <span class="filled-dot"></span>
+                        <span class="filled-dot"></span>
+                        <span class="filled-dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                </div>
             </div>
 
-            <div class="menu-card">
-                <div class="menu-card-img"></div>
-                <h3 class="menu-card-name">Latte</h3>
-                <p class="menu-card-desc">Smooth, creamy, and endlessly comforting.</p>
-                <span class="menu-card-price">$5.50</span>
-            </div>
+            <!--Nancy blend form-->
+            <form id="nancyblendform" class="form">
 
-            <div class="menu-card">
-                <div class="menu-card-img"></div>
-                <h3 class="menu-card-name">Mocha</h3>
-                <p class="menu-card-desc">Chocolate meets espresso in a perfect blend.</p>
-                <span class="menu-card-price">$6.00</span>
-            </div>
+                <!--Bag size form -->
+                <div class="options">
+                    <h3 class="section-title">Bag Size</h3>
+                    <div class="sizes">
+                        <label class="sizebutton">
+                            <input type="radio" name="bagsize" value="200g" checked>
+                            <span>200g</span> 
+                        </label>
+                        <label class="sizebutton">
+                            <input type="radio" name="bagsize" value="500g">
+                            <span>500g</span> 
+                        </label>
+                        <label class="sizebutton">
+                            <input type="radio" name="bagsize" value="700g">
+                            <span>700g</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!--Grind form-->
+                <div class="options">
+                    <h3 class="section-title">Grind</h3>
+                    <select name="grind" id="grind" class="select-input">
+                        <option value="Espresso">Espresso</option>
+                        <option value="Filter">Filter</option>
+                        <option value="Whole Bean">Whole Bean</option>
+                        <option value="French Press">French Press</option>
+                    </select>
+                </div>
+
+                <!--Quatntity form-->
+                <div class="options">
+                    <h3 class="section-title">Quantity</h3>
+                    <div class="quantities">
+                        <input type="number" id="quantity" name="quantity" class="quantinput" min="1" value="1">
+                    </div>
+                </div>
+
+                <!--Add button-->
+                <button type="submit" class="addbutton">
+                    Add to Cart
+                </button>
+            </form>
         </div>
-    </section>
-
-    <!-- Pastries Section -->
-    <section class="menu-section light-bg">
-        <h2 class="menu-section-title">Pastries & Bakery</h2>
-        <p class="menu-section-intro">
-            Freshly baked every morning using local ingredients.
-        </p>
-
-        <div class="menu-grid">
-            <div class="menu-card">
-                <div class="menu-card-img"></div>
-                <h3 class="menu-card-name">Croissant</h3>
-                <p class="menu-card-desc">Golden, flaky, and buttery.</p>
-                <span class="menu-card-price">$3.50</span>
-            </div>
-
-            <div class="menu-card">
-                <div class="menu-card-img"></div>
-                <h3 class="menu-card-name">Blueberry Muffin</h3>
-                <p class="menu-card-desc">Soft, sweet, and filled with berries.</p>
-                <span class="menu-card-price">$3.00</span>
-            </div>
-
-            <div class="menu-card">
-                <div class="menu-card-img"></div>
-                <h3 class="menu-card-name">Chocolate Cake</h3>
-                <p class="menu-card-desc">Decadent and rich with dark cocoa.</p>
-                <span class="menu-card-price">$4.00</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Special Items -->
-    <section class="menu-special-section">
-        <div class="menu-special-content">
-            <div class="menu-special-img"></div>
-            <div class="menu-special-text">
-                <h2 class="menu-special-title">Seasonal Special: Gingerbread Latte</h2>
-                <p class="menu-special-desc">
-                    Warm spices, velvety milk, and our signature espresso — the perfect holiday drink.
-                </p>
-                <span class="menu-special-price">$6.50</span>
-            </div>
-        </div>
-    </section>
+     
 
     <!-- Footer -->
     <footer class="footer">

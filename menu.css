@@ -1,109 +1,68 @@
-/* GLOBAL */
-
-body {
-    margin: 0;
-    padding: 0;
-    background-color: #F5F1EB;
-    font-family: Georgia, "Times New Roman", serif;
-    color: #1a1a1a;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-}
-
-/* HEADER */
-
-.menu-header {
-    background-color: #F5F1EB;
-    padding: 30px 40px;
-    border-bottom: 1px solid #dcd7ce;
-    display: flex;
-    justify-content: center;
-}
-
-.logo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-}
-
-.logo-circle {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    background-color: #1a1a1a;
-}
-
-.logo-text {
-    font-size: 14px;
-    letter-spacing: 3px;
-}
-
-/* HERO */
+/* Menu Page Styles */
 
 .menu-hero {
     display: flex;
     padding: 80px 40px;
     gap: 50px;
     align-items: center;
+    padding-top: 152px;
 }
 
-.hero-content {
+.menu-hero-content {
     width: 50%;
 }
 
-.hero-title {
+.menu-hero-title {
+    font-family: Georgia, "Times New Roman", Times, serif;
     font-size: 46px;
     font-weight: normal;
     margin: 0 0 20px 0;
+    color: #1a1a1a;
 }
 
-.hero-tagline {
+.menu-hero-tagline {
+    font-family: Georgia, "Times New Roman", Times, serif;
     font-size: 18px;
     color: #444;
     line-height: 1.6;
     max-width: 500px;
 }
 
-.hero-image {
+.menu-hero-image {
     width: 50%;
 }
 
-.hero-img {
+.menu-hero-img {
     width: 100%;
     height: 420px;
     background-size: cover;
     background-position: center;
 }
 
-/* SECTION */
-
 .menu-section {
     padding: 80px 40px;
     background-color: #F5F1EB;
 }
 
-.light-bg {
+.menu-section.light-bg {
     background-color: #EFE9E2;
 }
 
-.section-title {
+.menu-section-title {
+    font-family: Georgia, "Times New Roman", Times, serif;
     font-size: 38px;
     font-weight: normal;
     margin-bottom: 15px;
+    color: #1a1a1a;
 }
 
-.section-intro {
+.menu-section-intro {
+    font-family: Georgia, "Times New Roman", Times, serif;
     font-size: 16px;
     color: #555;
     max-width: 700px;
     margin-bottom: 50px;
 }
-
-/* GRID */
 
 .menu-grid {
     display: flex;
@@ -117,97 +76,89 @@ img {
     border: 1px solid #ddd;
 }
 
-.menu-img {
+.menu-card-img {
     width: 100%;
     height: 240px;
     background-size: cover;
     background-position: center;
 }
 
-.menu-name {
+.menu-card-name {
+    font-family: Georgia, "Times New Roman", Times, serif;
     font-size: 22px;
     margin: 20px 20px 8px 20px;
+    color: #1a1a1a;
+    font-weight: normal;
 }
 
-.menu-desc {
+.menu-card-desc {
+    font-family: Georgia, "Times New Roman", Times, serif;
     font-size: 14px;
     color: #666;
     margin: 0 20px 12px 20px;
 }
 
-.menu-price {
+.menu-card-price {
     margin-left: 20px;
     font-size: 14px;
     letter-spacing: 1px;
     font-family: Arial, Helvetica, sans-serif;
+    color: #1a1a1a;
 }
 
-/* SPECIAL SECTION */
-
-.special-section {
+.menu-special-section {
     padding: 80px 40px;
     background-color: #e8e4dc;
 }
 
-.special-content {
+.menu-special-content {
     display: flex;
     align-items: center;
     gap: 50px;
 }
 
-.special-img {
+.menu-special-img {
     width: 50%;
     height: 380px;
     background-size: cover;
     background-position: center;
 }
 
-.special-text {
+.menu-special-text {
     width: 50%;
 }
 
-.special-title {
+.menu-special-title {
+    font-family: Georgia, "Times New Roman", Times, serif;
     font-size: 32px;
     margin-bottom: 20px;
+    color: #1a1a1a;
+    font-weight: normal;
 }
 
-.special-desc {
+.menu-special-desc {
+    font-family: Georgia, "Times New Roman", Times, serif;
     font-size: 15px;
     color: #555;
     line-height: 1.7;
     margin-bottom: 20px;
 }
 
-.special-price {
+.menu-special-price {
     font-size: 14px;
     letter-spacing: 1px;
     font-family: Arial, Helvetica, sans-serif;
+    color: #1a1a1a;
 }
 
-/* FOOTER */
-
-.menu-footer {
-    background-color: #1a1a1a;
-    padding: 40px;
-    text-align: center;
-}
-
-.footer-text {
-    color: white;
-    font-size: 12px;
-    letter-spacing: 1px;
-}
-
-/* RESPONSIVE */
-
-@media (max-width: 900px) {
-
+@media screen and (max-width: 900px) {
     .menu-hero {
         flex-direction: column;
+        padding-top: 100px;
     }
 
-    .hero-content,
-    .hero-image {
+    .menu-hero-content,
+    .menu-hero-image {
         width: 100%;
     }
 
@@ -215,12 +166,12 @@ img {
         flex-direction: column;
     }
 
-    .special-content {
+    .menu-special-content {
         flex-direction: column;
     }
 
-    .special-img,
-    .special-text {
+    .menu-special-img,
+    .menu-special-text {
         width: 100%;
     }
 }
