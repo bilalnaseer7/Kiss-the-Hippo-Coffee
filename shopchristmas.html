@@ -7,19 +7,6 @@
     <link rel="stylesheet" href="styles.css">
     <style>
         /* Placeholder styles for preview - remove when adding real images */
-        .logo-img {
-            width: 50px;
-            height: 50px;
-            background-color: #1a1a1a;
-            border-radius: 50%;
-        }
-        .cart-img {
-            width: 20px;
-            height: 20px;
-            background-color: transparent;
-            border: 2px solid #1a1a1a;
-            border-radius: 3px;
-        }
         .hero-img {
             background-color: #3d3225;
         }
@@ -61,14 +48,14 @@
 
         <div class="logo">
             <a href="index.html">
-                <div class="logo-img"></div>
+                <img src="images/logo.png" alt="Kiss the Hippo Logo" class="logo-img">
                 <span class="logo-text">KISS THE HIPPO</span>
             </a>
         </div>
 
         <div class="header-right">
             <div class="cart-icon">
-                <div class="cart-img"></div>
+                <img src="images/shoppingcart.svg" alt="Shopping Cart" class="cart-img">
                 <span class="cart-count">(0)</span>
             </div>
         </div>
@@ -80,9 +67,7 @@
             <div class="side-menu-header">
                 <div class="side-menu-logo">
                     <a href="index.html">
-                        <svg class="mountain-logo" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20 50 L30 30 L40 40 L50 20 L60 35 L70 25 L80 45" stroke="#1a1a1a" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                        <img src="images/logo.png" alt="Kiss the Hippo Logo" class="mountain-logo">
                     </a>
                 </div>
                 <div class="side-menu-header-icons">
@@ -93,7 +78,7 @@
                         </svg>
                     </div>
                     <div class="cart-icon-menu">
-                        <div class="cart-img"></div>
+                        <img src="images/shoppingcart.svg" alt="Shopping Cart" class="cart-img">
                         <span class="cart-count">(0)</span>
                     </div>
                     <div class="close-icon" id="closeMenu">✕</div>
@@ -114,6 +99,27 @@
                     <span>United States (USD $)</span>
                     <span class="chevron">▼</span>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar Overlay -->
+    <div class="cart-sidebar-overlay" id="cartSidebar">
+        <div class="cart-sidebar-content">
+            <div class="cart-sidebar-header">
+                <h2 class="cart-sidebar-title">Your cart</h2>
+                <div class="cart-close-icon" id="closeCart">✕</div>
+            </div>
+            <div class="cart-items-container" id="cartItemsContainer">
+                <!-- Cart items will be dynamically inserted here -->
+            </div>
+            <div class="cart-sidebar-footer">
+                <div class="cart-subtotal">
+                    <span class="cart-subtotal-label">Subtotal</span>
+                    <span class="cart-subtotal-amount" id="cartSubtotal">$0.00 USD</span>
+                </div>
+                <p class="cart-tax-note">Tax included. Shipping calculated at checkout.</p>
+                <a href="shoppingcart.html" class="cart-checkout-btn">CHECK OUT</a>
             </div>
         </div>
     </div>
@@ -202,6 +208,33 @@
                     Add to Cart
                 </button>
             </form>
+            
+            <script>
+                // Handle form submission
+                document.getElementById('christmasblendform').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(this);
+                    const bagSize = formData.get('bagsize');
+                    const grind = formData.get('grind');
+                    const quantity = parseInt(formData.get('quantity')) || 1;
+                    
+                    const product = {
+                        id: 'christmas-blend',
+                        name: 'Christmas Blend',
+                        price: 35.00,
+                        image: 'images/christmasblend.png',
+                        bagSize: bagSize,
+                        grind: grind,
+                        quantity: quantity
+                    };
+                    
+                    if (typeof addToCart === 'function') {
+                        addToCart(product);
+                        openCart();
+                    }
+                });
+            </script>
         </div>
      
 
@@ -252,32 +285,206 @@
     </footer>
 
     <script>
+        // Cart functionality
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        
+        // Select cart elements
+        const cartIcon = document.querySelector('.cart-icon');
+        const cartIconMenu = document.querySelector('.cart-icon-menu');
+        const cartSidebar = document.getElementById('cartSidebar');
+        const closeCart = document.getElementById('closeCart');
+        const cartItemsContainer = document.getElementById('cartItemsContainer');
+        const cartCountElements = document.querySelectorAll('.cart-count');
+        
+        // Open cart when clicking cart icon
+        if (cartIcon) {
+            cartIcon.addEventListener('click', openCart);
+        }
+        if (cartIconMenu) {
+            cartIconMenu.addEventListener('click', openCart);
+        }
+        
+        // Close cart
+        if (closeCart) {
+            closeCart.addEventListener('click', closeCartFunc);
+        }
+        
+        // Close cart when clicking outside
+        if (cartSidebar) {
+            cartSidebar.addEventListener('click', function(event) {
+                if (event.target.id === 'cartSidebar') {
+                    closeCartFunc();
+                }
+            });
+        }
+        
+        function openCart() {
+            if (cartSidebar) {
+                cartSidebar.classList.add('active');
+            }
+        }
+        
+        function closeCartFunc() {
+            if (cartSidebar) {
+                cartSidebar.classList.remove('active');
+            }
+        }
+        
+        // Update cart count
+        function updateCartCount() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCountElements.forEach(el => {
+                el.textContent = `(${totalItems})`;
+            });
+        }
+        
+        // Add item to cart
+        function addToCart(item) {
+            const existingItem = cart.find(cartItem => 
+                cartItem.id === item.id && 
+                cartItem.bagSize === item.bagSize && 
+                cartItem.grind === item.grind
+            );
+            
+            if (existingItem) {
+                existingItem.quantity += item.quantity;
+            } else {
+                cart.push(item);
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            renderCart();
+        }
+        
+        // Remove item from cart
+        function removeFromCart(itemId, bagSize, grind) {
+            cart = cart.filter(item => {
+                // For equipment items (no bagSize/grind)
+                if ((!bagSize || bagSize === '') && (!grind || grind === '')) {
+                    return !(item.id === itemId && !item.bagSize && !item.grind);
+                }
+                // For coffee items (with bagSize/grind)
+                return !(item.id === itemId && item.bagSize === bagSize && item.grind === grind);
+            });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            renderCart();
+        }
+        
+        // Update item quantity
+        function updateQuantity(itemId, bagSize, grind, newQuantity) {
+            let item;
+            // For equipment items (no bagSize/grind)
+            if ((!bagSize || bagSize === '') && (!grind || grind === '')) {
+                item = cart.find(item => 
+                    item.id === itemId && !item.bagSize && !item.grind
+                );
+            } else {
+                // For coffee items (with bagSize/grind)
+                item = cart.find(item => 
+                    item.id === itemId && item.bagSize === bagSize && item.grind === grind
+                );
+            }
+            
+            if (item) {
+                if (newQuantity <= 0) {
+                    removeFromCart(itemId, bagSize, grind);
+                } else {
+                    item.quantity = newQuantity;
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    updateCartCount();
+                    renderCart();
+                }
+            }
+        }
+        
+        // Render cart items
+        function renderCart() {
+            if (!cartItemsContainer) return;
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<div class="cart-empty">Your cart is empty</div>';
+                document.getElementById('cartSubtotal').textContent = '$0.00 USD';
+                return;
+            }
+            
+            let html = '';
+            let subtotal = 0;
+            
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                
+                html += `
+                    <div class="cart-item">
+                        <img src="${item.image}" alt="${item.name}" class="cart-item-image" onerror="this.style.backgroundColor='#8B7355'">
+                        <div class="cart-item-details">
+                            <h3 class="cart-item-name">${item.name}</h3>
+                            <p class="cart-item-price">$${item.price.toFixed(2)} USD</p>
+                            ${item.bagSize ? `<p class="cart-item-options">Size: ${item.bagSize}</p>` : ''}
+                            ${item.grind ? `<p class="cart-item-options">Grind: ${item.grind}</p>` : ''}
+                            <div class="cart-item-quantity">
+                                <button class="quantity-btn" onclick="updateQuantity('${item.id}', '${item.bagSize || ''}', '${item.grind || ''}', ${item.quantity - 1})">−</button>
+                                <span class="quantity-value">${item.quantity}</span>
+                                <button class="quantity-btn" onclick="updateQuantity('${item.id}', '${item.bagSize || ''}', '${item.grind || ''}', ${item.quantity + 1})">+</button>
+                            </div>
+                            <button class="cart-item-remove" onclick="removeFromCart('${item.id}', '${item.bagSize || ''}', '${item.grind || ''}')">Remove</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            cartItemsContainer.innerHTML = html;
+            document.getElementById('cartSubtotal').textContent = `$${subtotal.toFixed(2)} USD`;
+        }
+        
+        // Make functions globally available
+        window.addToCart = addToCart;
+        window.removeFromCart = removeFromCart;
+        window.updateQuantity = updateQuantity;
+        window.openCart = openCart;
+        
+        // Initialize cart display
+        updateCartCount();
+        renderCart();
+        
         // Select menu elements
         const menuToggle = document.getElementById('menuToggle');
         const sideMenu = document.getElementById('sideMenu');
         const closeMenu = document.getElementById('closeMenu');
     
         // Open menu when user clicks menu toggle button
-        menuToggle.addEventListener('click', openMenu);
+        if (menuToggle) {
+            menuToggle.addEventListener('click', openMenu);
+        }
     
         // Close menu when user clicks close button
-        closeMenu.addEventListener('click', closeMenuFunc);
+        if (closeMenu) {
+            closeMenu.addEventListener('click', closeMenuFunc);
+        }
     
         // Close menu when clicking outside
-        sideMenu.addEventListener('click', function(event) {
-            if (event.target.id === 'sideMenu') {
-                closeMenuFunc();
-            }
-        });
+        if (sideMenu) {
+            sideMenu.addEventListener('click', function(event) {
+                if (event.target.id === 'sideMenu') {
+                    closeMenuFunc();
+                }
+            });
+        }
     
         // Function to open menu
         function openMenu() {
-            sideMenu.classList.add('active');
+            if (sideMenu) {
+                sideMenu.classList.add('active');
+            }
         }
     
         // Function to close menu
         function closeMenuFunc() {
-            sideMenu.classList.remove('active');
+            if (sideMenu) {
+                sideMenu.classList.remove('active');
+            }
         }
     </script>
 
