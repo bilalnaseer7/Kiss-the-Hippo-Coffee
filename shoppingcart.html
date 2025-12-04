@@ -137,19 +137,62 @@
             font-family: Arial, Helvetica, sans-serif;
             font-size: 12px;
             color: #666;
-            margin: 0 0 5px 0;
+            margin: 0 0 10px 0;
         }
 
-        .summary-item-qty {
+        .summary-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .summary-quantity-btn {
+            width: 24px;
+            height: 24px;
+            border: 1px solid #1a1a1a;
+            background-color: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #1a1a1a;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .summary-quantity-btn:hover {
+            background-color: #1a1a1a;
+            color: #F5F1EB;
+        }
+
+        .summary-quantity-value {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .summary-item-remove {
             font-family: Arial, Helvetica, sans-serif;
             font-size: 12px;
             color: #666;
+            cursor: pointer;
+            text-decoration: underline;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .summary-item-remove:hover {
+            color: #1a1a1a;
         }
 
         .summary-item-price {
             font-family: Arial, Helvetica, sans-serif;
             font-size: 14px;
             color: #1a1a1a;
+            align-self: flex-start;
         }
 
         .summary-row {
@@ -447,8 +490,10 @@
             var itemsHTML = '';
             for (var i = 0; i < cart.length; i++) {
                 var item = cart[i];
+                var bagSize = item.bagSize || '';
+                var grind = item.grind || '';
                 itemsHTML += '<div class="summary-item">';
-                itemsHTML += '<img src="' + item.image + '" alt="' + item.name + '" class="summary-item-image">';
+                itemsHTML += '<img src="' + item.image + '" alt="' + item.name + '" class="summary-item-image" onerror="this.style.backgroundColor=\'#8B7355\'">';
                 itemsHTML += '<div class="summary-item-details">';
                 itemsHTML += '<p class="summary-item-name">' + item.name + '</p>';
                 if (item.bagSize) {
@@ -457,7 +502,12 @@
                 if (item.grind) {
                     itemsHTML += '<p class="summary-item-options">Grind: ' + item.grind + '</p>';
                 }
-                itemsHTML += '<p class="summary-item-qty">Qty: ' + item.quantity + '</p>';
+                itemsHTML += '<div class="summary-item-quantity">';
+                itemsHTML += '<button class="summary-quantity-btn" onclick="updateQuantity(\'' + item.id + '\', \'' + bagSize + '\', \'' + grind + '\', ' + (item.quantity - 1) + ')">−</button>';
+                itemsHTML += '<span class="summary-quantity-value">' + item.quantity + '</span>';
+                itemsHTML += '<button class="summary-quantity-btn" onclick="updateQuantity(\'' + item.id + '\', \'' + bagSize + '\', \'' + grind + '\', ' + (item.quantity + 1) + ')">+</button>';
+                itemsHTML += '</div>';
+                itemsHTML += '<button class="summary-item-remove" onclick="removeFromCart(\'' + item.id + '\', \'' + bagSize + '\', \'' + grind + '\')">Remove</button>';
                 itemsHTML += '</div>';
                 itemsHTML += '<span class="summary-item-price">$' + (item.price * item.quantity).toFixed(2) + '</span>';
                 itemsHTML += '</div>';
@@ -594,16 +644,70 @@
 
             checkoutContainer.innerHTML = html;
             
-            // Set cart data in hidden field
-            document.getElementById('cartDataInput').value = JSON.stringify(cart);
+            // Set cart data in hidden field if it exists
+            var cartDataInput = document.getElementById('cartDataInput');
+            if (cartDataInput) {
+                cartDataInput.value = JSON.stringify(cart);
+            }
 
             // Add form submission handler
-            document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-                // Clear cart after successful submission
-                // This will be handled by PHP, but we prepare the data
-                document.getElementById('cartDataInput').value = JSON.stringify(cart);
-            });
+            var checkoutForm = document.getElementById('checkoutForm');
+            if (checkoutForm) {
+                checkoutForm.addEventListener('submit', function(e) {
+                    // Update cart data before submission
+                    var cartDataInput = document.getElementById('cartDataInput');
+                    if (cartDataInput) {
+                        cartDataInput.value = JSON.stringify(cart);
+                    }
+                });
+            }
         }
+
+        // Remove item from cart
+        function removeFromCart(itemId, bagSize, grind) {
+            cart = cart.filter(function(item) {
+                // For equipment items (no bagSize/grind)
+                if ((!bagSize || bagSize === '') && (!grind || grind === '')) {
+                    return !(item.id === itemId && !item.bagSize && !item.grind);
+                }
+                // For coffee items (with bagSize/grind)
+                return !(item.id === itemId && item.bagSize === bagSize && item.grind === grind);
+            });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            renderCheckout();
+        }
+
+        // Update item quantity
+        function updateQuantity(itemId, bagSize, grind, newQuantity) {
+            var item;
+            // For equipment items (no bagSize/grind)
+            if ((!bagSize || bagSize === '') && (!grind || grind === '')) {
+                item = cart.find(function(item) {
+                    return item.id === itemId && !item.bagSize && !item.grind;
+                });
+            } else {
+                // For coffee items (with bagSize/grind)
+                item = cart.find(function(item) {
+                    return item.id === itemId && item.bagSize === bagSize && item.grind === grind;
+                });
+            }
+            
+            if (item) {
+                if (newQuantity <= 0) {
+                    removeFromCart(itemId, bagSize, grind);
+                } else {
+                    item.quantity = newQuantity;
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    updateCartCount();
+                    renderCheckout();
+                }
+            }
+        }
+
+        // Make functions globally available
+        window.removeFromCart = removeFromCart;
+        window.updateQuantity = updateQuantity;
 
         // Initialize
         updateCartCount();
