@@ -119,8 +119,7 @@
                     <span class="cart-subtotal-amount" id="cartSubtotal">$0.00 USD</span>
                 </div>
                 <p class="cart-tax-note">Tax included. Shipping calculated at checkout.</p>
-                <button class="cart-checkout-btn">CHECK OUT</button>
-                <button class="cart-view-btn">VIEW CART</button>
+                <a href="shoppingcart.html" class="cart-checkout-btn">CHECK OUT</a>
             </div>
         </div>
     </div>
@@ -360,9 +359,14 @@
         
         // Remove item from cart
         function removeFromCart(itemId, bagSize, grind) {
-            cart = cart.filter(item => 
-                !(item.id === itemId && item.bagSize === bagSize && item.grind === grind)
-            );
+            cart = cart.filter(item => {
+                // For equipment items (no bagSize/grind)
+                if ((!bagSize || bagSize === '') && (!grind || grind === '')) {
+                    return !(item.id === itemId && !item.bagSize && !item.grind);
+                }
+                // For coffee items (with bagSize/grind)
+                return !(item.id === itemId && item.bagSize === bagSize && item.grind === grind);
+            });
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartCount();
             renderCart();
@@ -370,9 +374,19 @@
         
         // Update item quantity
         function updateQuantity(itemId, bagSize, grind, newQuantity) {
-            const item = cart.find(item => 
-                item.id === itemId && item.bagSize === bagSize && item.grind === grind
-            );
+            let item;
+            // For equipment items (no bagSize/grind)
+            if ((!bagSize || bagSize === '') && (!grind || grind === '')) {
+                item = cart.find(item => 
+                    item.id === itemId && !item.bagSize && !item.grind
+                );
+            } else {
+                // For coffee items (with bagSize/grind)
+                item = cart.find(item => 
+                    item.id === itemId && item.bagSize === bagSize && item.grind === grind
+                );
+            }
+            
             if (item) {
                 if (newQuantity <= 0) {
                     removeFromCart(itemId, bagSize, grind);

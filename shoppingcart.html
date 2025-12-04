@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Kiss the Hippo Coffee</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Checkout Page Specific Styles */
+        .checkout-section {
+            padding-top: 130px;
+            padding-bottom: 80px;
+            padding-left: 40px;
+            padding-right: 40px;
+            min-height: 60vh;
+        }
+
+        .checkout-container {
+            display: flex;
+            gap: 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .checkout-form-section {
+            flex: 1;
+        }
+
+        .checkout-summary-section {
+            width: 400px;
+            background-color: #e8e4dc;
+            padding: 30px;
+            height: fit-content;
+        }
+
+        .checkout-title {
+            font-family: Georgia, "Times New Roman", Times, serif;
+            font-size: 32px;
+            font-weight: normal;
+            margin: 0 0 30px 0;
+            color: #1a1a1a;
+        }
+
+        .checkout-subtitle {
+            font-family: Georgia, "Times New Roman", Times, serif;
+            font-size: 20px;
+            font-weight: normal;
+            margin: 0 0 20px 0;
+            color: #1a1a1a;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 13px;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            font-family: Georgia, "Times New Roman", Times, serif;
+            font-size: 15px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            color: #1a1a1a;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #8B7355;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .section-divider {
+            height: 1px;
+            background-color: #e0e0e0;
+            margin: 30px 0;
+        }
+
+        /* Order Summary Styles */
+        .summary-title {
+            font-family: Georgia, "Times New Roman", Times, serif;
+            font-size: 22px;
+            font-weight: normal;
+            margin: 0 0 25px 0;
+            color: #1a1a1a;
+        }
+
+        .summary-items {
+            margin-bottom: 25px;
+        }
+
+        .summary-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #d0ccc4;
+        }
+
+        .summary-item-image {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            background-color: #8B7355;
+        }
+
+        .summary-item-details {
+            flex: 1;
+        }
+
+        .summary-item-name {
+            font-family: Georgia, "Times New Roman", Times, serif;
+            font-size: 15px;
+            margin: 0 0 5px 0;
+            color: #1a1a1a;
+        }
+
+        .summary-item-options {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            color: #666;
+            margin: 0 0 5px 0;
+        }
+
+        .summary-item-qty {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .summary-item-price {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            color: #1a1a1a;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            font-family: Georgia, "Times New Roman", Times, serif;
+            font-size: 15px;
+            color: #1a1a1a;
+        }
+
+        .summary-row.total {
+            border-top: 1px solid #d0ccc4;
+            margin-top: 15px;
+            padding-top: 20px;
+            font-size: 18px;
+        }
+
+        .summary-label {
+            color: #555;
+        }
+
+        .summary-value {
+            font-weight: normal;
+        }
+
+        .place-order-btn {
+            width: 100%;
+            padding: 15px 30px;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            margin-top: 25px;
+        }
+
+        .place-order-btn:hover {
+            background-color: #333;
+        }
+
+        .back-to-cart {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 13px;
+            color: #666;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .back-to-cart:hover {
+            color: #1a1a1a;
+        }
+
+        .empty-cart-message {
+            text-align: center;
+            padding: 60px 20px;
+            font-family: Georgia, "Times New Roman", Times, serif;
+            font-size: 18px;
+            color: #666;
+        }
+
+        .empty-cart-message a {
+            color: #8B7355;
+            text-decoration: underline;
+        }
+
+        /* Required field indicator */
+        .required {
+            color: #b02513;
+        }
+
+        /* Card icons placeholder */
+        .card-icons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 25px;
+            background-color: #ddd;
+            border: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #666;
+        }
+
+        /* Responsive styles */
+        @media screen and (max-width: 900px) {
+            .checkout-container {
+                flex-direction: column;
+            }
+
+            .checkout-summary-section {
+                width: 100%;
+            }
+
+            .checkout-section {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Top Header Bar -->
+    <div class="top-header">
+        <div class="top-header-icons">
+            <div class="grid-icon">
+                <span class="grid-line"></span>
+                <span class="grid-line"></span>
+                <span class="grid-line"></span>
+                <span class="grid-line"></span>
+            </div>
+            <span class="header-separator">|</span>
+            <div class="circle-icon"></div>
+        </div>
+    </div>
+
+    <!-- Header / Navigation -->
+    <header class="header">
+        <div class="header-left">
+            <div class="menu-icon" id="menuToggle">
+                <span class="menu-line"></span>
+                <span class="menu-line"></span>
+                <span class="menu-line"></span>
+            </div>
+            <span class="shop-link">SHOP</span>
+        </div>
+
+        <div class="logo">
+            <a href="index.html">
+                <img src="images/logo.png" alt="Kiss the Hippo Logo" class="logo-img">
+                <span class="logo-text">KISS THE HIPPO</span>
+            </a>
+        </div>
+
+        <div class="header-right">
+            <div class="cart-icon">
+                <img src="images/shoppingcart.svg" alt="Shopping Cart" class="cart-img">
+                <span class="cart-count">(0)</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Side Menu Overlay -->
+    <div class="side-menu-overlay" id="sideMenu">
+        <div class="side-menu-content">
+            <div class="side-menu-header">
+                <div class="side-menu-logo">
+                    <a href="index.html">
+                        <img src="images/logo.png" alt="Kiss the Hippo Logo" class="mountain-logo">
+                    </a>
+                </div>
+                <div class="side-menu-header-icons">
+                    <div class="search-icon">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8" cy="8" r="6" stroke="#1a1a1a" stroke-width="1.5" fill="none"/>
+                            <path d="M13 13L16 16" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="cart-icon-menu">
+                        <img src="images/shoppingcart.svg" alt="Shopping Cart" class="cart-img">
+                        <span class="cart-count">(0)</span>
+                    </div>
+                    <div class="close-icon" id="closeMenu">✕</div>
+                </div>
+            </div>
+
+            <nav class="side-menu-nav">
+                <a href="coffeebean.html" class="nav-link">Shop Coffee</a>
+                <a href="menu.html" class="nav-link">Menu</a>
+                <a href="#" class="nav-link">Subscriptions</a>
+                <a href="#" class="nav-link">Our Café</a>
+                <a href="#" class="nav-link">Our Story</a>
+                <a href="#" class="nav-link">In the Press</a>
+            </nav>
+
+            <div class="side-menu-footer">
+                <div class="currency-selector">
+                    <span>United States (USD $)</span>
+                    <span class="chevron">▼</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Section -->
+    <section class="checkout-section">
+        <div class="checkout-container" id="checkoutContainer">
+            <!-- This will be populated by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span class="footer-logo">KISS THE HIPPO</span>
+                <p class="footer-tagline">Boldly Brewed Since 2020</p>
+            </div>
+
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4 class="footer-heading">Shop</h4>
+                    <p class="footer-link">Coffee Beans</p>
+                    <p class="footer-link">Equipment</p>
+                    <p class="footer-link">Merchandise</p>
+                    <p class="footer-link">Subscriptions</p>
+                </div>
+
+                <div class="footer-column">
+                    <h4 class="footer-heading">About</h4>
+                    <p class="footer-link">Our Story</p>
+                    <p class="footer-link">Our Cafes</p>
+                    <p class="footer-link">Sustainability</p>
+                    <p class="footer-link">Press</p>
+                </div>
+
+                <div class="footer-column">
+                    <h4 class="footer-heading">Help</h4>
+                    <p class="footer-link">Contact Us</p>
+                    <p class="footer-link">FAQs</p>
+                    <p class="footer-link">Shipping</p>
+                    <p class="footer-link">Returns</p>
+                </div>
+            </div>
+
+            <div class="footer-social">
+                <span class="social-icon">Instagram</span>
+                <span class="social-icon">Twitter</span>
+                <span class="social-icon">Facebook</span>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p class="copyright">© 2025 Kiss the Hippo Coffee. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Get cart from localStorage
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartCountElements = document.querySelectorAll('.cart-count');
+        const checkoutContainer = document.getElementById('checkoutContainer');
+
+        // Update cart count in header
+        function updateCartCount() {
+            const totalItems = cart.reduce(function(sum, item) {
+                return sum + item.quantity;
+            }, 0);
+            cartCountElements.forEach(function(el) {
+                el.textContent = '(' + totalItems + ')';
+            });
+        }
+
+        // Calculate subtotal
+        function calculateSubtotal() {
+            var subtotal = 0;
+            for (var i = 0; i < cart.length; i++) {
+                subtotal += cart[i].price * cart[i].quantity;
+            }
+            return subtotal;
+        }
+
+        // Render checkout page
+        function renderCheckout() {
+            if (cart.length === 0) {
+                checkoutContainer.innerHTML = '<div class="empty-cart-message">Your cart is empty.<br><br><a href="coffeebean.html">Continue Shopping</a></div>';
+                return;
+            }
+
+            var subtotal = calculateSubtotal();
+            var shipping = 5.00;
+            var tax = subtotal * 0.08;
+            var total = subtotal + shipping + tax;
+
+            var itemsHTML = '';
+            for (var i = 0; i < cart.length; i++) {
+                var item = cart[i];
+                itemsHTML += '<div class="summary-item">';
+                itemsHTML += '<img src="' + item.image + '" alt="' + item.name + '" class="summary-item-image">';
+                itemsHTML += '<div class="summary-item-details">';
+                itemsHTML += '<p class="summary-item-name">' + item.name + '</p>';
+                if (item.bagSize) {
+                    itemsHTML += '<p class="summary-item-options">Size: ' + item.bagSize + '</p>';
+                }
+                if (item.grind) {
+                    itemsHTML += '<p class="summary-item-options">Grind: ' + item.grind + '</p>';
+                }
+                itemsHTML += '<p class="summary-item-qty">Qty: ' + item.quantity + '</p>';
+                itemsHTML += '</div>';
+                itemsHTML += '<span class="summary-item-price">$' + (item.price * item.quantity).toFixed(2) + '</span>';
+                itemsHTML += '</div>';
+            }
+
+            var html = '';
+            html += '<div class="checkout-form-section">';
+            html += '<h1 class="checkout-title">Checkout</h1>';
+            
+            html += '<form id="checkoutForm" action="shoppingcart.php" method="POST">';
+            
+            // Customer Information
+            html += '<h2 class="checkout-subtitle">Customer Information</h2>';
+            html += '<div class="form-group">';
+            html += '<label class="form-label">Full Name <span class="required">*</span></label>';
+            html += '<input type="text" name="customer_name" class="form-input" placeholder="John Doe" required>';
+            html += '</div>';
+            
+            html += '<div class="form-group">';
+            html += '<label class="form-label">Email Address <span class="required">*</span></label>';
+            html += '<input type="email" name="email" class="form-input" placeholder="john@example.com" required>';
+            html += '</div>';
+            
+            html += '<div class="form-group">';
+            html += '<label class="form-label">Phone Number</label>';
+            html += '<input type="tel" name="phone" class="form-input" placeholder="(123) 456-7890">';
+            html += '</div>';
+            
+            html += '<div class="section-divider"></div>';
+            
+            // Shipping Address
+            html += '<h2 class="checkout-subtitle">Shipping Address</h2>';
+            html += '<div class="form-group">';
+            html += '<label class="form-label">Street Address <span class="required">*</span></label>';
+            html += '<input type="text" name="address" class="form-input" placeholder="123 Main Street" required>';
+            html += '</div>';
+            
+            html += '<div class="form-group">';
+            html += '<label class="form-label">Apartment, Suite, etc. (optional)</label>';
+            html += '<input type="text" name="address2" class="form-input" placeholder="Apt 4B">';
+            html += '</div>';
+            
+            html += '<div class="form-row">';
+            html += '<div class="form-group">';
+            html += '<label class="form-label">City <span class="required">*</span></label>';
+            html += '<input type="text" name="city" class="form-input" placeholder="New York" required>';
+            html += '</div>';
+            html += '<div class="form-group">';
+            html += '<label class="form-label">State <span class="required">*</span></label>';
+            html += '<input type="text" name="state" class="form-input" placeholder="NY" required>';
+            html += '</div>';
+            html += '</div>';
+            
+            html += '<div class="form-row">';
+            html += '<div class="form-group">';
+            html += '<label class="form-label">ZIP Code <span class="required">*</span></label>';
+            html += '<input type="text" name="zipcode" class="form-input" placeholder="10001" required>';
+            html += '</div>';
+            html += '<div class="form-group">';
+            html += '<label class="form-label">Country</label>';
+            html += '<input type="text" name="country" class="form-input" value="United States" readonly>';
+            html += '</div>';
+            html += '</div>';
+            
+            html += '<div class="section-divider"></div>';
+            
+            // Payment Information
+            html += '<h2 class="checkout-subtitle">Payment Information</h2>';
+            html += '<div class="card-icons">';
+            html += '<div class="card-icon">VISA</div>';
+            html += '<div class="card-icon">MC</div>';
+            html += '<div class="card-icon">AMEX</div>';
+            html += '</div>';
+            
+            html += '<div class="form-group">';
+            html += '<label class="form-label">Card Number <span class="required">*</span></label>';
+            html += '<input type="text" name="card_number" class="form-input" placeholder="1234 5678 9012 3456" maxlength="19" required>';
+            html += '</div>';
+            
+            html += '<div class="form-group">';
+            html += '<label class="form-label">Name on Card <span class="required">*</span></label>';
+            html += '<input type="text" name="card_name" class="form-input" placeholder="JOHN DOE" required>';
+            html += '</div>';
+            
+            html += '<div class="form-row">';
+            html += '<div class="form-group">';
+            html += '<label class="form-label">Expiry Date <span class="required">*</span></label>';
+            html += '<input type="text" name="expiry_date" class="form-input" placeholder="MM/YY" maxlength="5" required>';
+            html += '</div>';
+            html += '<div class="form-group">';
+            html += '<label class="form-label">CVV <span class="required">*</span></label>';
+            html += '<input type="text" name="cvv" class="form-input" placeholder="123" maxlength="4" required>';
+            html += '</div>';
+            html += '</div>';
+            
+            // Hidden field to pass cart data
+            html += '<input type="hidden" name="cart_data" id="cartDataInput">';
+            html += '<input type="hidden" name="subtotal" value="' + subtotal.toFixed(2) + '">';
+            html += '<input type="hidden" name="shipping" value="' + shipping.toFixed(2) + '">';
+            html += '<input type="hidden" name="tax" value="' + tax.toFixed(2) + '">';
+            html += '<input type="hidden" name="total" value="' + total.toFixed(2) + '">';
+            
+            html += '</form>';
+            html += '</div>';
+            
+            // Order Summary
+            html += '<div class="checkout-summary-section">';
+            html += '<h2 class="summary-title">Order Summary</h2>';
+            html += '<div class="summary-items">' + itemsHTML + '</div>';
+            
+            html += '<div class="summary-row">';
+            html += '<span class="summary-label">Subtotal</span>';
+            html += '<span class="summary-value">$' + subtotal.toFixed(2) + '</span>';
+            html += '</div>';
+            
+            html += '<div class="summary-row">';
+            html += '<span class="summary-label">Shipping</span>';
+            html += '<span class="summary-value">$' + shipping.toFixed(2) + '</span>';
+            html += '</div>';
+            
+            html += '<div class="summary-row">';
+            html += '<span class="summary-label">Tax (8%)</span>';
+            html += '<span class="summary-value">$' + tax.toFixed(2) + '</span>';
+            html += '</div>';
+            
+            html += '<div class="summary-row total">';
+            html += '<span class="summary-label">Total</span>';
+            html += '<span class="summary-value">$' + total.toFixed(2) + ' USD</span>';
+            html += '</div>';
+            
+            html += '<button type="submit" form="checkoutForm" class="place-order-btn">PLACE ORDER</button>';
+            html += '<a href="index.html" class="back-to-cart">← Back to Shopping</a>';
+            html += '</div>';
+
+            checkoutContainer.innerHTML = html;
+            
+            // Set cart data in hidden field
+            document.getElementById('cartDataInput').value = JSON.stringify(cart);
+
+            // Add form submission handler
+            document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+                // Clear cart after successful submission
+                // This will be handled by PHP, but we prepare the data
+                document.getElementById('cartDataInput').value = JSON.stringify(cart);
+            });
+        }
+
+        // Initialize
+        updateCartCount();
+        renderCheckout();
+
+        // Menu toggle functionality
+        var menuToggle = document.getElementById('menuToggle');
+        var sideMenu = document.getElementById('sideMenu');
+        var closeMenu = document.getElementById('closeMenu');
+        
+        if (menuToggle) {
+            menuToggle.addEventListener('click', function() {
+                sideMenu.classList.add('active');
+            });
+        }
+        if (closeMenu) {
+            closeMenu.addEventListener('click', function() {
+                sideMenu.classList.remove('active');
+            });
+        }
+        if (sideMenu) {
+            sideMenu.addEventListener('click', function(event) {
+                if (event.target.id === 'sideMenu') {
+                    sideMenu.classList.remove('active');
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
