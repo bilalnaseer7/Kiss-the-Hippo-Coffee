@@ -165,6 +165,55 @@
             color: #1a1a1a;
         }
 
+        .summary-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .summary-quantity-btn {
+            width: 28px;
+            height: 28px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            color: #1a1a1a;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .summary-quantity-btn:hover {
+            background-color: #f5f5f5;
+        }
+
+        .summary-quantity-value {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            color: #1a1a1a;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .summary-item-remove {
+            background: none;
+            border: none;
+            color: #666;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 0;
+            margin-top: 5px;
+        }
+
+        .summary-item-remove:hover {
+            color: #1a1a1a;
+        }
+
         .summary-row {
             display: flex;
             justify-content: space-between;
@@ -553,75 +602,164 @@
         let tax = 0;
         let total = 0;
 
-        // update cart count
-        let totalItems = 0;
-        for (let i = 0; i < cart.length; i++) {
-            totalItems = totalItems + cart[i].quantity;
-        }
-        headerCartCount.innerHTML = "(" + totalItems + ")";
-        menuCartCount.innerHTML = "(" + totalItems + ")";
-
-        // calculate subtotal
-        subtotal = 0;
-        for (let i = 0; i < cart.length; i++) {
-            let itemPrice = parseFloat(cart[i].price);
-            let itemQty = parseFloat(cart[i].quantity);
-            subtotal = subtotal + (itemPrice * itemQty);
-        }
-
-        // calculate tax and total
-        tax = subtotal * 0.08;
-        total = subtotal + shipping + tax;
-
-        // display cart items
-            if (cart.length === 0) {
-            cartItemsDiv.innerHTML = "<p class='empty-cart-message'>Your cart is empty. <a href='coffeebean.html'>Continue Shopping</a></p>";
-        } else {
-            let itemsHTML = "";
-
-            for (let i = 0; i < cart.length; i++) {
-                let item = cart[i];
-                let itemTotal = parseFloat(item.price) * parseFloat(item.quantity);
-
-                itemsHTML += "<div class='summary-item'>";
-                itemsHTML += "<img src='" + item.image + "' alt='" + item.name + "' class='summary-item-image'>";
-                itemsHTML += "<div class='summary-item-details'>";
-                itemsHTML += "<p class='summary-item-name'>" + item.name + "</p>";
-
-                if (item.bagSize) {
-                    itemsHTML += "<p class='summary-item-options'>Size: " + item.bagSize + "</p>";
-                }
-
-                if (item.grind) {
-                    itemsHTML += "<p class='summary-item-options'>Grind: " + item.grind + "</p>";
-                }
-
-                itemsHTML += "<p class='summary-item-options'>Qty: " + item.quantity + "</p>";
-                itemsHTML += "</div>";
-                itemsHTML += "<span class='summary-item-price'>$" + itemTotal.toFixed(2) + "</span>";
-                itemsHTML += "</div>";
+        // Function to render cart items
+        function renderCart() {
+            // Reload cart from storage
+            let cartData = localStorage.getItem('cart');
+            if (cartData !== null) {
+                cart = JSON.parse(cartData);
+            } else {
+                cart = [];
             }
 
-            cartItemsDiv.innerHTML = itemsHTML;
+            // Update cart count
+            let totalItems = 0;
+            for (let i = 0; i < cart.length; i++) {
+                totalItems = totalItems + cart[i].quantity;
+            }
+            headerCartCount.innerHTML = "(" + totalItems + ")";
+            menuCartCount.innerHTML = "(" + totalItems + ")";
+
+            // Calculate subtotal
+            subtotal = 0;
+            for (let i = 0; i < cart.length; i++) {
+                let itemPrice = parseFloat(cart[i].price);
+                let itemQty = parseFloat(cart[i].quantity);
+                subtotal = subtotal + (itemPrice * itemQty);
+            }
+
+            // Calculate tax and total
+            tax = subtotal * 0.08;
+            total = subtotal + shipping + tax;
+
+            // Display cart items
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = "<p class='empty-cart-message'>Your cart is empty. <a href='coffeebean.html'>Continue Shopping</a></p>";
+            } else {
+                let itemsHTML = "";
+
+                for (let i = 0; i < cart.length; i++) {
+                    let item = cart[i];
+                    let itemTotal = parseFloat(item.price) * parseFloat(item.quantity);
+                    let bagSize = item.bagSize || '';
+                    let grind = item.grind || '';
+
+                    itemsHTML += "<div class='summary-item'>";
+                    itemsHTML += "<img src='" + item.image + "' alt='" + item.name + "' class='summary-item-image' onerror=\"this.style.backgroundColor='#8B7355'\">";
+                    itemsHTML += "<div class='summary-item-details'>";
+                    itemsHTML += "<p class='summary-item-name'>" + item.name + "</p>";
+
+                    if (item.bagSize) {
+                        itemsHTML += "<p class='summary-item-options'>Size: " + item.bagSize + "</p>";
+                    }
+
+                    if (item.grind) {
+                        itemsHTML += "<p class='summary-item-options'>Grind: " + item.grind + "</p>";
+                    }
+
+                    itemsHTML += "<div class='summary-item-quantity'>";
+                    itemsHTML += "<button class='summary-quantity-btn' onclick=\"updateQuantity('" + item.id + "', '" + bagSize + "', '" + grind + "', " + (item.quantity - 1) + ")\">−</button>";
+                    itemsHTML += "<span class='summary-quantity-value'>" + item.quantity + "</span>";
+                    itemsHTML += "<button class='summary-quantity-btn' onclick=\"updateQuantity('" + item.id + "', '" + bagSize + "', '" + grind + "', " + (item.quantity + 1) + ")\">+</button>";
+                    itemsHTML += "</div>";
+                    itemsHTML += "<button class='summary-item-remove' onclick=\"removeFromCart('" + item.id + "', '" + bagSize + "', '" + grind + "')\">Remove</button>";
+                    itemsHTML += "</div>";
+                    itemsHTML += "<span class='summary-item-price'>$" + itemTotal.toFixed(2) + "</span>";
+                    itemsHTML += "</div>";
+                }
+
+                cartItemsDiv.innerHTML = itemsHTML;
+            }
+
+            // Update totals display
+            subtotalDisplay.innerHTML = "$" + subtotal.toFixed(2);
+            shippingDisplay.innerHTML = "$" + shipping.toFixed(2);
+            taxDisplay.innerHTML = "$" + tax.toFixed(2);
+            totalDisplay.innerHTML = "$" + total.toFixed(2) + " USD";
+
+            // Set hidden field values
+            cartDataInput.value = JSON.stringify(cart);
+            subtotalInput.value = subtotal.toFixed(2);
+            shippingInput.value = shipping.toFixed(2);
+            taxInput.value = tax.toFixed(2);
+            totalInput.value = total.toFixed(2);
         }
 
-        // update totals display
-        subtotalDisplay.innerHTML = "$" + subtotal.toFixed(2);
-        shippingDisplay.innerHTML = "$" + shipping.toFixed(2);
-        taxDisplay.innerHTML = "$" + tax.toFixed(2);
-        totalDisplay.innerHTML = "$" + total.toFixed(2) + " USD";
+        // Remove item from cart
+        function removeFromCart(itemId, bagSize, grind) {
+            // Reload cart from storage
+            let cartData = localStorage.getItem('cart');
+            if (cartData !== null) {
+                cart = JSON.parse(cartData);
+            } else {
+                cart = [];
+            }
 
-        // set hidden field values
-        cartDataInput.value = JSON.stringify(cart);
-        subtotalInput.value = subtotal.toFixed(2);
-        shippingInput.value = shipping.toFixed(2);
-        taxInput.value = tax.toFixed(2);
-        totalInput.value = total.toFixed(2);
+            cart = cart.filter(item => {
+                // For equipment items (no bagSize/grind)
+                if ((!bagSize || bagSize === '') && (!grind || grind === '')) {
+                    return !(item.id === itemId && !item.bagSize && !item.grind);
+                }
+                // For coffee items (with bagSize/grind)
+                return !(item.id === itemId && item.bagSize === bagSize && item.grind === grind);
+            });
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+        }
+
+        // Update item quantity
+        function updateQuantity(itemId, bagSize, grind, newQuantity) {
+            // Reload cart from storage
+            let cartData = localStorage.getItem('cart');
+            if (cartData !== null) {
+                cart = JSON.parse(cartData);
+            } else {
+                cart = [];
+            }
+
+            let item;
+            // For equipment items (no bagSize/grind)
+            if ((!bagSize || bagSize === '') && (!grind || grind === '')) {
+                item = cart.find(item => 
+                    item.id === itemId && !item.bagSize && !item.grind
+                );
+            } else {
+                // For coffee items (with bagSize/grind)
+                item = cart.find(item => 
+                    item.id === itemId && item.bagSize === bagSize && item.grind === grind
+                );
+            }
+
+            if (item) {
+                if (newQuantity <= 0) {
+                    removeFromCart(itemId, bagSize, grind);
+                } else {
+                    item.quantity = newQuantity;
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    renderCart();
+                }
+            }
+        }
+
+        // Make functions globally available
+        window.removeFromCart = removeFromCart;
+        window.updateQuantity = updateQuantity;
+
+        // Initial render
+        renderCart();
 
         // form validation on submit
         const formobj = document.forms[0];
 
         formobj.addEventListener("submit", function(event) {
+            // Reload cart from storage before validation
+            let cartData = localStorage.getItem('cart');
+            if (cartData !== null) {
+                cart = JSON.parse(cartData);
+            } else {
+                cart = [];
+            }
 
             // check if cart is empty
             if (cart.length === 0) {
