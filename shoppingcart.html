@@ -6,7 +6,7 @@
     <title>Checkout | Kiss the Hippo Coffee</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Checkout Page Specific Styles */
+        /* checkout page styles */
         .checkout-section {
             padding-top: 130px;
             padding-bottom: 80px;
@@ -55,16 +55,17 @@
             margin-bottom: 20px;
         }
 
-        .form-label {
+        .form-group label {
             display: block;
             font-family: Arial, Helvetica, sans-serif;
             font-size: 13px;
             color: #1a1a1a;
             margin-bottom: 8px;
-            letter-spacing: 0.5px;
+            font-weight: bold;
         }
 
-        .form-input {
+        .form-group input,
+        .form-group select {
             width: 100%;
             padding: 12px 15px;
             font-family: Georgia, "Times New Roman", Times, serif;
@@ -73,11 +74,6 @@
             background-color: #fff;
             color: #1a1a1a;
             box-sizing: border-box;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: #8B7355;
         }
 
         .form-row {
@@ -95,7 +91,30 @@
             margin: 30px 0;
         }
 
-        /* Order Summary Styles */
+        .required {
+            color: #b02513;
+        }
+
+        .card-icons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 25px;
+            background-color: #ddd;
+            border: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #666;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* order summary styles */
         .summary-title {
             font-family: Georgia, "Times New Roman", Times, serif;
             font-size: 22px;
@@ -140,15 +159,58 @@
             margin: 0 0 5px 0;
         }
 
-        .summary-item-qty {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 12px;
-            color: #666;
-        }
-
         .summary-item-price {
             font-family: Arial, Helvetica, sans-serif;
             font-size: 14px;
+            color: #1a1a1a;
+        }
+
+        .summary-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .summary-quantity-btn {
+            width: 28px;
+            height: 28px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            color: #1a1a1a;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .summary-quantity-btn:hover {
+            background-color: #f5f5f5;
+        }
+
+        .summary-quantity-value {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            color: #1a1a1a;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .summary-item-remove {
+            background: none;
+            border: none;
+            color: #666;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 0;
+            margin-top: 5px;
+        }
+
+        .summary-item-remove:hover {
             color: #1a1a1a;
         }
 
@@ -168,14 +230,6 @@
             font-size: 18px;
         }
 
-        .summary-label {
-            color: #555;
-        }
-
-        .summary-value {
-            font-weight: normal;
-        }
-
         .place-order-btn {
             width: 100%;
             padding: 15px 30px;
@@ -193,7 +247,7 @@
             background-color: #333;
         }
 
-        .back-to-cart {
+        .back-link {
             display: block;
             text-align: center;
             margin-top: 15px;
@@ -201,11 +255,6 @@
             font-size: 13px;
             color: #666;
             text-decoration: underline;
-            cursor: pointer;
-        }
-
-        .back-to-cart:hover {
-            color: #1a1a1a;
         }
 
         .empty-cart-message {
@@ -221,40 +270,14 @@
             text-decoration: underline;
         }
 
-        /* Required field indicator */
-        .required {
-            color: #b02513;
-        }
-
-        /* Card icons placeholder */
-        .card-icons {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .card-icon {
-            width: 40px;
-            height: 25px;
-            background-color: #ddd;
-            border: 1px solid #ccc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            color: #666;
-        }
-
-        /* Responsive styles */
+        /* Responsive */
         @media screen and (max-width: 900px) {
             .checkout-container {
                 flex-direction: column;
             }
-
             .checkout-summary-section {
                 width: 100%;
             }
-
             .checkout-section {
                 padding-left: 20px;
                 padding-right: 20px;
@@ -307,7 +330,7 @@
         <div class="header-right">
             <div class="cart-icon">
                 <img src="images/shoppingcart.svg" alt="Shopping Cart" class="cart-img">
-                <span class="cart-count">(0)</span>
+                <span class="cart-count" id="headerCartCount">(0)</span>
             </div>
         </div>
     </header>
@@ -330,7 +353,7 @@
                     </div>
                     <div class="cart-icon-menu">
                         <img src="images/shoppingcart.svg" alt="Shopping Cart" class="cart-img">
-                        <span class="cart-count">(0)</span>
+                        <span class="cart-count" id="menuCartCount">(0)</span>
                     </div>
                     <div class="close-icon" id="closeMenu">✕</div>
                 </div>
@@ -356,8 +379,145 @@
 
     <!-- Checkout Section -->
     <section class="checkout-section">
-        <div class="checkout-container" id="checkoutContainer">
-            <!-- This will be populated by JavaScript -->
+        <div class="checkout-container">
+
+            <!-- Left Side: Checkout Form (Written directly in HTML like professor does) -->
+            <div class="checkout-form-section">
+                <h1 class="checkout-title">Checkout</h1>
+
+                <form action="shoppingcart.php" method="POST">
+
+                    <!-- Customer Information -->
+                    <h2 class="checkout-subtitle">Customer Information</h2>
+
+                    <div class="form-group">
+                        <label for="customerName">Full Name <span class="required">*</span></label>
+                        <input type="text" id="customerName" name="customer_name" placeholder="John Doe">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" placeholder="john@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="(123) 456-7890">
+                    </div>
+
+                    <div class="section-divider"></div>
+
+                    <!-- Shipping Address -->
+                    <h2 class="checkout-subtitle">Shipping Address</h2>
+
+                    <div class="form-group">
+                        <label for="address">Street Address <span class="required">*</span></label>
+                        <input type="text" id="address" name="address" placeholder="123 Main Street">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address2">Apartment, Suite, etc. (optional)</label>
+                        <input type="text" id="address2" name="address2" placeholder="Apt 4B">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">City <span class="required">*</span></label>
+                            <input type="text" id="city" name="city" placeholder="New York">
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State <span class="required">*</span></label>
+                            <input type="text" id="state" name="state" placeholder="NY">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="zipcode">ZIP Code <span class="required">*</span></label>
+                            <input type="text" id="zipcode" name="zipcode" placeholder="10001">
+                        </div>
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <input type="text" id="country" name="country" value="United States" readonly>
+                        </div>
+                    </div>
+
+                    <div class="section-divider"></div>
+
+                    <!-- Payment Information -->
+                    <h2 class="checkout-subtitle">Payment Information</h2>
+
+                    <div class="card-icons">
+                        <div class="card-icon">VISA</div>
+                        <div class="card-icon">MC</div>
+                        <div class="card-icon">AMEX</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cardNumber">Card Number <span class="required">*</span></label>
+                        <input type="text" id="cardNumber" name="card_number" placeholder="1234 5678 9012 3456" maxlength="19">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cardName">Name on Card <span class="required">*</span></label>
+                        <input type="text" id="cardName" name="card_name" placeholder="JOHN DOE">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="expiryDate">Expiry Date <span class="required">*</span></label>
+                            <input type="text" id="expiryDate" name="expiry_date" placeholder="MM/YY" maxlength="5">
+                        </div>
+                        <div class="form-group">
+                            <label for="cvv">CVV <span class="required">*</span></label>
+                            <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="4">
+                        </div>
+                    </div>
+
+                    <!-- Hidden fields for PHP (values set by JavaScript) -->
+                    <input type="hidden" id="cartData" name="cart_data">
+                    <input type="hidden" id="subtotalInput" name="subtotal">
+                    <input type="hidden" id="shippingInput" name="shipping">
+                    <input type="hidden" id="taxInput" name="tax">
+                    <input type="hidden" id="totalInput" name="total">
+
+                    <input type="submit" value="PLACE ORDER" class="place-order-btn">
+
+                </form>
+
+                <a href="index.html" class="back-link">← Back to Shopping</a>
+            </div>
+
+            <!-- Right Side: Order Summary -->
+            <div class="checkout-summary-section">
+                <h2 class="summary-title">Order Summary</h2>
+
+                <!-- Cart items displayed here by JavaScript -->
+                <div class="summary-items" id="cartItems">
+                    <!-- Items will be added by JavaScript -->
+                </div>
+
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="subtotalDisplay">$0.00</span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Shipping</span>
+                    <span id="shippingDisplay">$5.00</span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Tax (8%)</span>
+                    <span id="taxDisplay">$0.00</span>
+                </div>
+
+                <div class="summary-row total">
+                    <span>Total</span>
+                    <span id="totalDisplay">$0.00 USD</span>
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -408,228 +568,263 @@
     </footer>
 
     <script>
-        // Get cart from localStorage
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const cartCountElements = document.querySelectorAll('.cart-count');
-        const checkoutContainer = document.getElementById('checkoutContainer');
-
-        // Update cart count in header
-        function updateCartCount() {
-            const totalItems = cart.reduce(function(sum, item) {
-                return sum + item.quantity;
-            }, 0);
-            cartCountElements.forEach(function(el) {
-                el.textContent = '(' + totalItems + ')';
-            });
+        // get cart from storage
+        let cart = [];
+        let cartData = localStorage.getItem('cart');
+        if (cartData !== null) {
+            cart = JSON.parse(cartData);
         }
 
-        // Calculate subtotal
-        function calculateSubtotal() {
-            var subtotal = 0;
-            for (var i = 0; i < cart.length; i++) {
-                subtotal += cart[i].price * cart[i].quantity;
+        // select dom elements
+        const headerCartCount = document.getElementById('headerCartCount');
+        const menuCartCount = document.getElementById('menuCartCount');
+        const cartItemsDiv = document.getElementById('cartItems');
+        const subtotalDisplay = document.getElementById('subtotalDisplay');
+        const shippingDisplay = document.getElementById('shippingDisplay');
+        const taxDisplay = document.getElementById('taxDisplay');
+        const totalDisplay = document.getElementById('totalDisplay');
+
+        // hidden input fields
+        const cartDataInput = document.getElementById('cartData');
+        const subtotalInput = document.getElementById('subtotalInput');
+        const shippingInput = document.getElementById('shippingInput');
+        const taxInput = document.getElementById('taxInput');
+        const totalInput = document.getElementById('totalInput');
+
+        // menu elements
+        const menuToggle = document.getElementById('menuToggle');
+        const sideMenu = document.getElementById('sideMenu');
+        const closeMenuBtn = document.getElementById('closeMenu');
+
+        // calculation variables
+        let subtotal = 0;
+        let shipping = 5.00;
+        let tax = 0;
+        let total = 0;
+
+        // Function to render cart items
+        function renderCart() {
+            // Reload cart from storage
+            let cartData = localStorage.getItem('cart');
+            if (cartData !== null) {
+                cart = JSON.parse(cartData);
+            } else {
+                cart = [];
             }
-            return subtotal;
+
+            // Update cart count
+            let totalItems = 0;
+            for (let i = 0; i < cart.length; i++) {
+                totalItems = totalItems + cart[i].quantity;
+            }
+            headerCartCount.innerHTML = "(" + totalItems + ")";
+            menuCartCount.innerHTML = "(" + totalItems + ")";
+
+            // Calculate subtotal
+            subtotal = 0;
+            for (let i = 0; i < cart.length; i++) {
+                let itemPrice = parseFloat(cart[i].price);
+                let itemQty = parseFloat(cart[i].quantity);
+                subtotal = subtotal + (itemPrice * itemQty);
+            }
+
+            // Calculate tax and total
+            tax = subtotal * 0.08;
+            total = subtotal + shipping + tax;
+
+            // Display cart items
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = "<p class='empty-cart-message'>Your cart is empty. <a href='coffeebean.html'>Continue Shopping</a></p>";
+            } else {
+                let itemsHTML = "";
+
+                for (let i = 0; i < cart.length; i++) {
+                    let item = cart[i];
+                    let itemTotal = parseFloat(item.price) * parseFloat(item.quantity);
+                    let bagSize = item.bagSize || '';
+                    let grind = item.grind || '';
+
+                    itemsHTML += "<div class='summary-item'>";
+                    itemsHTML += "<img src='" + item.image + "' alt='" + item.name + "' class='summary-item-image' onerror=\"this.style.backgroundColor='#8B7355'\">";
+                    itemsHTML += "<div class='summary-item-details'>";
+                    itemsHTML += "<p class='summary-item-name'>" + item.name + "</p>";
+
+                    if (item.bagSize) {
+                        itemsHTML += "<p class='summary-item-options'>Size: " + item.bagSize + "</p>";
+                    }
+
+                    if (item.grind) {
+                        itemsHTML += "<p class='summary-item-options'>Grind: " + item.grind + "</p>";
+                    }
+
+                    itemsHTML += "<div class='summary-item-quantity'>";
+                    itemsHTML += "<button class='summary-quantity-btn' onclick=\"updateQuantity('" + item.id + "', '" + bagSize + "', '" + grind + "', " + (item.quantity - 1) + ")\">−</button>";
+                    itemsHTML += "<span class='summary-quantity-value'>" + item.quantity + "</span>";
+                    itemsHTML += "<button class='summary-quantity-btn' onclick=\"updateQuantity('" + item.id + "', '" + bagSize + "', '" + grind + "', " + (item.quantity + 1) + ")\">+</button>";
+                    itemsHTML += "</div>";
+                    itemsHTML += "<button class='summary-item-remove' onclick=\"removeFromCart('" + item.id + "', '" + bagSize + "', '" + grind + "')\">Remove</button>";
+                    itemsHTML += "</div>";
+                    itemsHTML += "<span class='summary-item-price'>$" + itemTotal.toFixed(2) + "</span>";
+                    itemsHTML += "</div>";
+                }
+
+                cartItemsDiv.innerHTML = itemsHTML;
+            }
+
+            // Update totals display
+            subtotalDisplay.innerHTML = "$" + subtotal.toFixed(2);
+            shippingDisplay.innerHTML = "$" + shipping.toFixed(2);
+            taxDisplay.innerHTML = "$" + tax.toFixed(2);
+            totalDisplay.innerHTML = "$" + total.toFixed(2) + " USD";
+
+            // Set hidden field values
+            cartDataInput.value = JSON.stringify(cart);
+            subtotalInput.value = subtotal.toFixed(2);
+            shippingInput.value = shipping.toFixed(2);
+            taxInput.value = tax.toFixed(2);
+            totalInput.value = total.toFixed(2);
         }
 
-        // Render checkout page
-        function renderCheckout() {
+        // Remove item from cart
+        function removeFromCart(itemId, bagSize, grind) {
+            // Reload cart from storage
+            let cartData = localStorage.getItem('cart');
+            if (cartData !== null) {
+                cart = JSON.parse(cartData);
+            } else {
+                cart = [];
+            }
+
+            cart = cart.filter(item => {
+                // For equipment items (no bagSize/grind)
+                if ((!bagSize || bagSize === '') && (!grind || grind === '')) {
+                    return !(item.id === itemId && !item.bagSize && !item.grind);
+                }
+                // For coffee items (with bagSize/grind)
+                return !(item.id === itemId && item.bagSize === bagSize && item.grind === grind);
+            });
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+        }
+
+        // Update item quantity
+        function updateQuantity(itemId, bagSize, grind, newQuantity) {
+            // Reload cart from storage
+            let cartData = localStorage.getItem('cart');
+            if (cartData !== null) {
+                cart = JSON.parse(cartData);
+            } else {
+                cart = [];
+            }
+
+            let item;
+            // For equipment items (no bagSize/grind)
+            if ((!bagSize || bagSize === '') && (!grind || grind === '')) {
+                item = cart.find(item => 
+                    item.id === itemId && !item.bagSize && !item.grind
+                );
+            } else {
+                // For coffee items (with bagSize/grind)
+                item = cart.find(item => 
+                    item.id === itemId && item.bagSize === bagSize && item.grind === grind
+                );
+            }
+
+            if (item) {
+                if (newQuantity <= 0) {
+                    removeFromCart(itemId, bagSize, grind);
+                } else {
+                    item.quantity = newQuantity;
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    renderCart();
+                }
+            }
+        }
+
+        // Make functions globally available
+        window.removeFromCart = removeFromCart;
+        window.updateQuantity = updateQuantity;
+
+        // Initial render
+        renderCart();
+
+        // form validation on submit
+        const formobj = document.forms[0];
+
+        formobj.addEventListener("submit", function(event) {
+            // Reload cart from storage before validation
+            let cartData = localStorage.getItem('cart');
+            if (cartData !== null) {
+                cart = JSON.parse(cartData);
+            } else {
+                cart = [];
+            }
+
+            // check if cart is empty
             if (cart.length === 0) {
-                checkoutContainer.innerHTML = '<div class="empty-cart-message">Your cart is empty.<br><br><a href="coffeebean.html">Continue Shopping</a></div>';
+                alert("Your cart is empty. Please add items before checking out.");
+                event.preventDefault();
                 return;
             }
 
-            var subtotal = calculateSubtotal();
-            var shipping = 5.00;
-            var tax = subtotal * 0.08;
-            var total = subtotal + shipping + tax;
+            // update cart data before submit
+            cartDataInput.value = JSON.stringify(cart);
 
-            var itemsHTML = '';
-            for (var i = 0; i < cart.length; i++) {
-                var item = cart[i];
-                itemsHTML += '<div class="summary-item">';
-                itemsHTML += '<img src="' + item.image + '" alt="' + item.name + '" class="summary-item-image">';
-                itemsHTML += '<div class="summary-item-details">';
-                itemsHTML += '<p class="summary-item-name">' + item.name + '</p>';
-                if (item.bagSize) {
-                    itemsHTML += '<p class="summary-item-options">Size: ' + item.bagSize + '</p>';
+            // loop through form elements for validation
+            for (let i = 0; i < formobj.elements.length - 1; i++) {
+                const element = formobj.elements[i];
+
+                // skip hidden fields
+                if (element.type === "hidden") {
+                    continue;
                 }
-                if (item.grind) {
-                    itemsHTML += '<p class="summary-item-options">Grind: ' + item.grind + '</p>';
+
+                // skip submit button
+                if (element.type === "submit") {
+                    continue;
                 }
-                itemsHTML += '<p class="summary-item-qty">Qty: ' + item.quantity + '</p>';
-                itemsHTML += '</div>';
-                itemsHTML += '<span class="summary-item-price">$' + (item.price * item.quantity).toFixed(2) + '</span>';
-                itemsHTML += '</div>';
+
+                // skip optional fields
+                if (element.name === "phone" || element.name === "address2") {
+                    continue;
+                }
+
+                // skip readonly fields
+                if (element.readOnly === true) {
+                    continue;
+                }
+
+                // check if required field is empty
+                if (element.value === "" || element.value === null) {
+                    alert("Please enter a value for " + element.name);
+                    element.focus();
+                    element.style.backgroundColor = "#ffcccc";
+                    event.preventDefault();
+                    return;
+                }
             }
 
-            var html = '';
-            html += '<div class="checkout-form-section">';
-            html += '<h1 class="checkout-title">Checkout</h1>';
-            
-            html += '<form id="checkoutForm" action="shoppingcart.php" method="POST">';
-            
-            // Customer Information
-            html += '<h2 class="checkout-subtitle">Customer Information</h2>';
-            html += '<div class="form-group">';
-            html += '<label class="form-label">Full Name <span class="required">*</span></label>';
-            html += '<input type="text" name="customer_name" class="form-input" placeholder="John Doe" required>';
-            html += '</div>';
-            
-            html += '<div class="form-group">';
-            html += '<label class="form-label">Email Address <span class="required">*</span></label>';
-            html += '<input type="email" name="email" class="form-input" placeholder="john@example.com" required>';
-            html += '</div>';
-            
-            html += '<div class="form-group">';
-            html += '<label class="form-label">Phone Number</label>';
-            html += '<input type="tel" name="phone" class="form-input" placeholder="(123) 456-7890">';
-            html += '</div>';
-            
-            html += '<div class="section-divider"></div>';
-            
-            // Shipping Address
-            html += '<h2 class="checkout-subtitle">Shipping Address</h2>';
-            html += '<div class="form-group">';
-            html += '<label class="form-label">Street Address <span class="required">*</span></label>';
-            html += '<input type="text" name="address" class="form-input" placeholder="123 Main Street" required>';
-            html += '</div>';
-            
-            html += '<div class="form-group">';
-            html += '<label class="form-label">Apartment, Suite, etc. (optional)</label>';
-            html += '<input type="text" name="address2" class="form-input" placeholder="Apt 4B">';
-            html += '</div>';
-            
-            html += '<div class="form-row">';
-            html += '<div class="form-group">';
-            html += '<label class="form-label">City <span class="required">*</span></label>';
-            html += '<input type="text" name="city" class="form-input" placeholder="New York" required>';
-            html += '</div>';
-            html += '<div class="form-group">';
-            html += '<label class="form-label">State <span class="required">*</span></label>';
-            html += '<input type="text" name="state" class="form-input" placeholder="NY" required>';
-            html += '</div>';
-            html += '</div>';
-            
-            html += '<div class="form-row">';
-            html += '<div class="form-group">';
-            html += '<label class="form-label">ZIP Code <span class="required">*</span></label>';
-            html += '<input type="text" name="zipcode" class="form-input" placeholder="10001" required>';
-            html += '</div>';
-            html += '<div class="form-group">';
-            html += '<label class="form-label">Country</label>';
-            html += '<input type="text" name="country" class="form-input" value="United States" readonly>';
-            html += '</div>';
-            html += '</div>';
-            
-            html += '<div class="section-divider"></div>';
-            
-            // Payment Information
-            html += '<h2 class="checkout-subtitle">Payment Information</h2>';
-            html += '<div class="card-icons">';
-            html += '<div class="card-icon">VISA</div>';
-            html += '<div class="card-icon">MC</div>';
-            html += '<div class="card-icon">AMEX</div>';
-            html += '</div>';
-            
-            html += '<div class="form-group">';
-            html += '<label class="form-label">Card Number <span class="required">*</span></label>';
-            html += '<input type="text" name="card_number" class="form-input" placeholder="1234 5678 9012 3456" maxlength="19" required>';
-            html += '</div>';
-            
-            html += '<div class="form-group">';
-            html += '<label class="form-label">Name on Card <span class="required">*</span></label>';
-            html += '<input type="text" name="card_name" class="form-input" placeholder="JOHN DOE" required>';
-            html += '</div>';
-            
-            html += '<div class="form-row">';
-            html += '<div class="form-group">';
-            html += '<label class="form-label">Expiry Date <span class="required">*</span></label>';
-            html += '<input type="text" name="expiry_date" class="form-input" placeholder="MM/YY" maxlength="5" required>';
-            html += '</div>';
-            html += '<div class="form-group">';
-            html += '<label class="form-label">CVV <span class="required">*</span></label>';
-            html += '<input type="text" name="cvv" class="form-input" placeholder="123" maxlength="4" required>';
-            html += '</div>';
-            html += '</div>';
-            
-            // Hidden field to pass cart data
-            html += '<input type="hidden" name="cart_data" id="cartDataInput">';
-            html += '<input type="hidden" name="subtotal" value="' + subtotal.toFixed(2) + '">';
-            html += '<input type="hidden" name="shipping" value="' + shipping.toFixed(2) + '">';
-            html += '<input type="hidden" name="tax" value="' + tax.toFixed(2) + '">';
-            html += '<input type="hidden" name="total" value="' + total.toFixed(2) + '">';
-            
-            html += '</form>';
-            html += '</div>';
-            
-            // Order Summary
-            html += '<div class="checkout-summary-section">';
-            html += '<h2 class="summary-title">Order Summary</h2>';
-            html += '<div class="summary-items">' + itemsHTML + '</div>';
-            
-            html += '<div class="summary-row">';
-            html += '<span class="summary-label">Subtotal</span>';
-            html += '<span class="summary-value">$' + subtotal.toFixed(2) + '</span>';
-            html += '</div>';
-            
-            html += '<div class="summary-row">';
-            html += '<span class="summary-label">Shipping</span>';
-            html += '<span class="summary-value">$' + shipping.toFixed(2) + '</span>';
-            html += '</div>';
-            
-            html += '<div class="summary-row">';
-            html += '<span class="summary-label">Tax (8%)</span>';
-            html += '<span class="summary-value">$' + tax.toFixed(2) + '</span>';
-            html += '</div>';
-            
-            html += '<div class="summary-row total">';
-            html += '<span class="summary-label">Total</span>';
-            html += '<span class="summary-value">$' + total.toFixed(2) + ' USD</span>';
-            html += '</div>';
-            
-            html += '<button type="submit" form="checkoutForm" class="place-order-btn">PLACE ORDER</button>';
-            html += '<a href="index.html" class="back-to-cart">← Back to Shopping</a>';
-            html += '</div>';
+            // form is valid
+        });
 
-            checkoutContainer.innerHTML = html;
-            
-            // Set cart data in hidden field
-            document.getElementById('cartDataInput').value = JSON.stringify(cart);
+        // menu toggle functionality
+        menuToggle.addEventListener("click", openMenu);
+        closeMenuBtn.addEventListener("click", closeMenu);
+        sideMenu.addEventListener("click", closeOnOverlay);
 
-            // Add form submission handler
-            document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-                // Clear cart after successful submission
-                // This will be handled by PHP, but we prepare the data
-                document.getElementById('cartDataInput').value = JSON.stringify(cart);
-            });
+        function openMenu() {
+            sideMenu.classList.add("active");
         }
 
-        // Initialize
-        updateCartCount();
-        renderCheckout();
+        function closeMenu() {
+            sideMenu.classList.remove("active");
+        }
 
-        // Menu toggle functionality
-        var menuToggle = document.getElementById('menuToggle');
-        var sideMenu = document.getElementById('sideMenu');
-        var closeMenu = document.getElementById('closeMenu');
-        
-        if (menuToggle) {
-            menuToggle.addEventListener('click', function() {
-                sideMenu.classList.add('active');
-            });
-        }
-        if (closeMenu) {
-            closeMenu.addEventListener('click', function() {
-                sideMenu.classList.remove('active');
-            });
-        }
-        if (sideMenu) {
-            sideMenu.addEventListener('click', function(event) {
-                if (event.target.id === 'sideMenu') {
-                    sideMenu.classList.remove('active');
-                }
-            });
+        function closeOnOverlay(event) {
+            if (event.target.id === "sideMenu") {
+                sideMenu.classList.remove("active");
+            }
         }
     </script>
 

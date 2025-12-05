@@ -1120,6 +1120,80 @@ img {
     border-radius: 3px;
 }
 
+/* Game Styles */
+#startscreen, #playscreen, #gameoverscreen {
+    margin: 15px auto; 
+    background-color: #F5F1EB; 
+}
+
+.hidden {
+    display: none; 
+}
+
+.active {
+    display: block; 
+}
+
+#startscreen, #gameoverscreen {
+    text-align: center; 
+}
+
+.game-title {
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: 38px;
+    font-weight: normal;
+    margin: 0;
+    color: #1a1a1a;
+}
+
+#gamegrid {
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px; 
+    margin: 5px auto; 
+    justify-items: center;
+}
+
+.mug {
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px; 
+}
+
+.mug-img {
+    width: 100%; 
+    height: auto; 
+    
+}
+
+.blink {
+    opacity: 0; 
+}
+
+#game, #showtimer {
+    text-align: center;
+    width: 100%;
+    font-size: 30px; 
+}
+
+#board {
+    display: inline-block; 
+    padding-left: 30px;
+    margin: 0 auto; 
+    text-align: left; 
+}
+
+#board li {
+    font-size: 22px; 
+    margin: 5px 0; 
+}
+
+#boardform {
+    text-align: center; 
+}
+
 /* Footer Styles */
 .footer {
     background-color: #1a1a1a;
