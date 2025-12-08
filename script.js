@@ -267,6 +267,8 @@ boardform.addEventListener('submit', function(){
     boardform.classList.add('hidden');
     enteredname.value = '';
     return false; 
-})
 
-screenDisplay('start'); 
+    setTimeout(() => {
+        screenDisplay('start');
+    }, 7000);
+})
