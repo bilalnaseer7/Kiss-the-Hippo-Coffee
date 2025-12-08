@@ -16,9 +16,129 @@
         .mission-img {
             background-color: #6b5d4d;
         }
+
+        /* Newsletter Popup Styles */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .popup-overlay.hidden {
+            display: none;
+        }
+
+        .popup-content {
+            background-color: #F5F1EB;
+            padding: 50px 40px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            border: 1px solid #e0e0e0;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #1a1a1a;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .popup-close:hover {
+            color: #666;
+        }
+
+        .popup-title {
+            font-family: Georgia, "Times New Roman", Times, serif;
+            font-size: 28px;
+            font-weight: normal;
+            color: #1a1a1a;
+            margin: 0 0 15px 0;
+        }
+
+        .popup-text {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            color: #666;
+            margin: 0 0 30px 0;
+            line-height: 1.6;
+        }
+
+        .popup-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .popup-input {
+            width: 100%;
+            padding: 15px;
+            font-family: Georgia, "Times New Roman", Times, serif;
+            font-size: 15px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            color: #1a1a1a;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .popup-input:focus {
+            outline: none;
+            border-color: #8B7355;
+        }
+
+        .popup-submit {
+            width: 100%;
+            padding: 15px;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .popup-submit:hover {
+            background-color: #333;
+        }
+
+        .popup-note {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 11px;
+            color: #999;
+            margin: 20px 0 0 0;
+        }
     </style>
 </head>
 <body>
+
+    <!-- Newsletter Popup (written directly in HTML like professor does) -->
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-content">
+            <div class="popup-close" id="popupClose">✕</div>
+            <h2 class="popup-title">Join the Hippo Club</h2>
+            <p class="popup-text">Subscribe to our newsletter for exclusive offers, brewing tips, and first access to new roasts.</p>
+            
+            <form class="popup-form" action="subscription.php" method="POST">
+                <input type="email" id="popupEmail" name="email" class="popup-input" placeholder="Enter your email address" required>
+                <input type="submit" value="SUBSCRIBE" class="popup-submit">
+            </form>
+            
+            <p class="popup-note">No spam, ever. Unsubscribe anytime.</p>
+        </div>
+    </div>
 
     <!-- Top Header Bar -->
     <div class="top-header">
@@ -88,7 +208,6 @@
                 <a href="coffeebean.html" class="nav-link">Shop Coffee</a>
                 <a href="menu.html" class="nav-link">Menu</a>
                 <a href="#" class="nav-link">Subscriptions</a>
-                <a href="#" class="nav-link">Our Café</a>
                 <a href="#" class="nav-link">Our Story</a>
                 <a href="game.html" class="nav-link">Spot the Mug</a>
             </nav>
@@ -244,7 +363,6 @@
                 <div class="footer-column">
                     <h4 class="footer-heading">About</h4>
                     <p class="footer-link">Our Story</p>
-                    <p class="footer-link">Our Cafes</p>
                     <p class="footer-link">Sustainability</p>
                     <p class="footer-link">Press</p>
                 </div>
@@ -271,204 +389,312 @@
     </footer>
 
     <script>
-        // Cart functionality
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        // ============================================
+        // NEWSLETTER POPUP FUNCTIONALITY
+        // (Following professor's style: getElementById, addEventListener, classList)
+        // ============================================
+        const popupOverlay = document.getElementById("popupOverlay");
+        const popupClose = document.getElementById("popupClose");
+
+        // Close popup when X is clicked
+        popupClose.addEventListener("click", closePopup);
+
+        // Close popup when clicking outside
+        popupOverlay.addEventListener("click", closeOnOverlayClick);
+
+        function closePopup() {
+            popupOverlay.classList.add("hidden");
+        }
+
+        function closeOnOverlayClick(event) {
+            if (event.target.id === "popupOverlay") {
+                popupOverlay.classList.add("hidden");
+            }
+        }
+
+        // ============================================
+        // CART FUNCTIONALITY
+        // (Following professor's style: for loops, getElementById, string concatenation)
+        // ============================================
         
-        // Select cart elements
-        const cartIcon = document.querySelector('.cart-icon');
-        const cartIconMenu = document.querySelector('.cart-icon-menu');
-        const cartSidebar = document.getElementById('cartSidebar');
-        const closeCart = document.getElementById('closeCart');
-        const cartItemsContainer = document.getElementById('cartItemsContainer');
-        const cartCountElements = document.querySelectorAll('.cart-count');
-        
+        // Get cart from localStorage
+        let cart = [];
+        let cartData = localStorage.getItem("cart");
+        if (cartData !== null) {
+            cart = JSON.parse(cartData);
+        }
+
+        // Select cart elements using getElementById and querySelector
+        const cartIcon = document.querySelector(".cart-icon");
+        const cartIconMenu = document.querySelector(".cart-icon-menu");
+        const cartSidebar = document.getElementById("cartSidebar");
+        const closeCart = document.getElementById("closeCart");
+        const cartItemsContainer = document.getElementById("cartItemsContainer");
+        const cartSubtotalDisplay = document.getElementById("cartSubtotal");
+
         // Open cart when clicking cart icon
         if (cartIcon) {
-            cartIcon.addEventListener('click', openCart);
+            cartIcon.addEventListener("click", openCart);
         }
         if (cartIconMenu) {
-            cartIconMenu.addEventListener('click', openCart);
+            cartIconMenu.addEventListener("click", openCart);
         }
-        
+
         // Close cart
         if (closeCart) {
-            closeCart.addEventListener('click', closeCartFunc);
+            closeCart.addEventListener("click", closeCartFunc);
         }
-        
+
         // Close cart when clicking outside
         if (cartSidebar) {
-            cartSidebar.addEventListener('click', function(event) {
-                if (event.target.id === 'cartSidebar') {
+            cartSidebar.addEventListener("click", function(event) {
+                if (event.target.id === "cartSidebar") {
                     closeCartFunc();
                 }
             });
         }
-        
+
         function openCart() {
             if (cartSidebar) {
-                cartSidebar.classList.add('active');
+                cartSidebar.classList.add("active");
             }
         }
-        
+
         function closeCartFunc() {
             if (cartSidebar) {
-                cartSidebar.classList.remove('active');
+                cartSidebar.classList.remove("active");
             }
         }
-        
-        // Update cart count
+
+        // ============================================
+        // UPDATE CART COUNT
+        // (Using for loop instead of .reduce - professor's style)
+        // ============================================
         function updateCartCount() {
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            cartCountElements.forEach(el => {
-                el.textContent = `(${totalItems})`;
-            });
+            let totalItems = 0;
+
+            // Use for loop like professor does (from 05_Repetition.js)
+            for (let i = 0; i < cart.length; i++) {
+                totalItems = totalItems + cart[i].quantity;
+            }
+
+            // Update all cart count elements using for loop
+            let cartCountElements = document.querySelectorAll(".cart-count");
+            for (let i = 0; i < cartCountElements.length; i++) {
+                cartCountElements[i].innerHTML = "(" + totalItems + ")";
+            }
         }
-        
-        // Add item to cart
+
+        // ============================================
+        // ADD ITEM TO CART
+        // (Using for loop instead of .find - professor's style)
+        // ============================================
         function addToCart(item) {
-            const existingItem = cart.find(cartItem => 
-                cartItem.id === item.id && 
-                cartItem.bagSize === item.bagSize && 
-                cartItem.grind === item.grind
-            );
-            
-            if (existingItem) {
-                existingItem.quantity += item.quantity;
+            let existingItem = null;
+
+            // Use for loop to find existing item (instead of .find)
+            for (let i = 0; i < cart.length; i++) {
+                if (cart[i].id === item.id && cart[i].bagSize === item.bagSize && cart[i].grind === item.grind) {
+                    existingItem = cart[i];
+                    break;
+                }
+            }
+
+            if (existingItem !== null) {
+                existingItem.quantity = existingItem.quantity + item.quantity;
             } else {
                 cart.push(item);
             }
-            
-            localStorage.setItem('cart', JSON.stringify(cart));
+
+            localStorage.setItem("cart", JSON.stringify(cart));
             updateCartCount();
             renderCart();
         }
-        
-        // Remove item from cart
+
+        // ============================================
+        // REMOVE ITEM FROM CART
+        // (Using for loop instead of .filter - professor's style)
+        // ============================================
         function removeFromCart(itemId, bagSize, grind) {
-            cart = cart.filter(item => {
+            let newCart = [];
+
+            // Use for loop to filter items (instead of .filter)
+            for (let i = 0; i < cart.length; i++) {
+                let item = cart[i];
+                let shouldRemove = false;
+
                 // For equipment items (no bagSize/grind)
-                if ((!bagSize || bagSize === '') && (!grind || grind === '')) {
-                    return !(item.id === itemId && !item.bagSize && !item.grind);
+                if ((bagSize === "" || bagSize === null || bagSize === undefined) && (grind === "" || grind === null || grind === undefined)) {
+                    if (item.id === itemId && !item.bagSize && !item.grind) {
+                        shouldRemove = true;
+                    }
+                } else {
+                    // For coffee items (with bagSize/grind)
+                    if (item.id === itemId && item.bagSize === bagSize && item.grind === grind) {
+                        shouldRemove = true;
+                    }
                 }
-                // For coffee items (with bagSize/grind)
-                return !(item.id === itemId && item.bagSize === bagSize && item.grind === grind);
-            });
-            localStorage.setItem('cart', JSON.stringify(cart));
+
+                if (shouldRemove === false) {
+                    newCart.push(item);
+                }
+            }
+
+            cart = newCart;
+            localStorage.setItem("cart", JSON.stringify(cart));
             updateCartCount();
             renderCart();
         }
-        
-        // Update item quantity
+
+        // ============================================
+        // UPDATE ITEM QUANTITY
+        // (Using for loop instead of .find - professor's style)
+        // ============================================
         function updateQuantity(itemId, bagSize, grind, newQuantity) {
-            let item;
-            // For equipment items (no bagSize/grind)
-            if ((!bagSize || bagSize === '') && (!grind || grind === '')) {
-                item = cart.find(item => 
-                    item.id === itemId && !item.bagSize && !item.grind
-                );
-            } else {
-                // For coffee items (with bagSize/grind)
-                item = cart.find(item => 
-                    item.id === itemId && item.bagSize === bagSize && item.grind === grind
-                );
+            let foundItem = null;
+
+            // Use for loop to find item (instead of .find)
+            for (let i = 0; i < cart.length; i++) {
+                let item = cart[i];
+
+                // For equipment items (no bagSize/grind)
+                if ((bagSize === "" || bagSize === null || bagSize === undefined) && (grind === "" || grind === null || grind === undefined)) {
+                    if (item.id === itemId && !item.bagSize && !item.grind) {
+                        foundItem = item;
+                        break;
+                    }
+                } else {
+                    // For coffee items (with bagSize/grind)
+                    if (item.id === itemId && item.bagSize === bagSize && item.grind === grind) {
+                        foundItem = item;
+                        break;
+                    }
+                }
             }
-            
-            if (item) {
+
+            if (foundItem !== null) {
                 if (newQuantity <= 0) {
                     removeFromCart(itemId, bagSize, grind);
                 } else {
-                    item.quantity = newQuantity;
-                    localStorage.setItem('cart', JSON.stringify(cart));
+                    foundItem.quantity = newQuantity;
+                    localStorage.setItem("cart", JSON.stringify(cart));
                     updateCartCount();
                     renderCart();
                 }
             }
         }
-        
-        // Render cart items
+
+        // ============================================
+        // RENDER CART ITEMS
+        // (Using for loop and string concatenation - professor's style)
+        // ============================================
         function renderCart() {
-            if (!cartItemsContainer) return;
-            
-            if (cart.length === 0) {
-                cartItemsContainer.innerHTML = '<div class="cart-empty">Your cart is empty</div>';
-                document.getElementById('cartSubtotal').textContent = '$0.00 USD';
+            if (!cartItemsContainer) {
                 return;
             }
-            
-            let html = '';
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = "<div class='cart-empty'>Your cart is empty</div>";
+                cartSubtotalDisplay.innerHTML = "$0.00 USD";
+                return;
+            }
+
+            let html = "";
             let subtotal = 0;
-            
-            cart.forEach((item, index) => {
-                const itemTotal = item.price * item.quantity;
-                subtotal += itemTotal;
-                
-                html += `
-                    <div class="cart-item">
-                        <img src="${item.image}" alt="${item.name}" class="cart-item-image" onerror="this.style.backgroundColor='#8B7355'">
-                        <div class="cart-item-details">
-                            <h3 class="cart-item-name">${item.name}</h3>
-                            <p class="cart-item-price">$${item.price.toFixed(2)} USD</p>
-                            ${item.bagSize ? `<p class="cart-item-options">Size: ${item.bagSize}</p>` : ''}
-                            ${item.grind ? `<p class="cart-item-options">Grind: ${item.grind}</p>` : ''}
-                            <div class="cart-item-quantity">
-                                <button class="quantity-btn" onclick="updateQuantity('${item.id}', '${item.bagSize || ''}', '${item.grind || ''}', ${item.quantity - 1})">−</button>
-                                <span class="quantity-value">${item.quantity}</span>
-                                <button class="quantity-btn" onclick="updateQuantity('${item.id}', '${item.bagSize || ''}', '${item.grind || ''}', ${item.quantity + 1})">+</button>
-                            </div>
-                            <button class="cart-item-remove" onclick="removeFromCart('${item.id}', '${item.bagSize || ''}', '${item.grind || ''}')">Remove</button>
-                        </div>
-                    </div>
-                `;
-            });
-            
+
+            // Use for loop instead of .forEach (professor's style from 06_Arrays.js)
+            for (let i = 0; i < cart.length; i++) {
+                let item = cart[i];
+                let itemPrice = parseFloat(item.price);
+                let itemQty = parseFloat(item.quantity);
+                let itemTotal = itemPrice * itemQty;
+                subtotal = subtotal + itemTotal;
+
+                // Build HTML using string concatenation (professor's style from 02SubmitEventNewDocWithCSS.html)
+                html = html + "<div class='cart-item'>";
+                html = html + "<img src='" + item.image + "' alt='" + item.name + "' class='cart-item-image' onerror=\"this.style.backgroundColor='#8B7355'\">";
+                html = html + "<div class='cart-item-details'>";
+                html = html + "<h3 class='cart-item-name'>" + item.name + "</h3>";
+                html = html + "<p class='cart-item-price'>$" + itemPrice.toFixed(2) + " USD</p>";
+
+                // Add bag size if exists
+                if (item.bagSize) {
+                    html = html + "<p class='cart-item-options'>Size: " + item.bagSize + "</p>";
+                }
+
+                // Add grind if exists
+                if (item.grind) {
+                    html = html + "<p class='cart-item-options'>Grind: " + item.grind + "</p>";
+                }
+
+                // Quantity controls
+                let bagSizeVal = item.bagSize || "";
+                let grindVal = item.grind || "";
+
+                html = html + "<div class='cart-item-quantity'>";
+                html = html + "<button class='quantity-btn' onclick=\"updateQuantity('" + item.id + "', '" + bagSizeVal + "', '" + grindVal + "', " + (item.quantity - 1) + ")\">−</button>";
+                html = html + "<span class='quantity-value'>" + item.quantity + "</span>";
+                html = html + "<button class='quantity-btn' onclick=\"updateQuantity('" + item.id + "', '" + bagSizeVal + "', '" + grindVal + "', " + (item.quantity + 1) + ")\">+</button>";
+                html = html + "</div>";
+
+                // Remove button
+                html = html + "<button class='cart-item-remove' onclick=\"removeFromCart('" + item.id + "', '" + bagSizeVal + "', '" + grindVal + "')\">Remove</button>";
+
+                html = html + "</div>";
+                html = html + "</div>";
+            }
+
             cartItemsContainer.innerHTML = html;
-            document.getElementById('cartSubtotal').textContent = `$${subtotal.toFixed(2)} USD`;
+            cartSubtotalDisplay.innerHTML = "$" + subtotal.toFixed(2) + " USD";
         }
-        
+
         // Make functions globally available
         window.addToCart = addToCart;
         window.removeFromCart = removeFromCart;
         window.updateQuantity = updateQuantity;
-        
+
         // Initialize cart display
         updateCartCount();
         renderCart();
-        
-        // Select menu elements
-        const menuToggle = document.getElementById('menuToggle');
-        const sideMenu = document.getElementById('sideMenu');
-        const closeMenu = document.getElementById('closeMenu');
-    
+
+        // ============================================
+        // MENU FUNCTIONALITY
+        // (Following professor's style: getElementById, addEventListener, classList)
+        // ============================================
+        const menuToggle = document.getElementById("menuToggle");
+        const sideMenu = document.getElementById("sideMenu");
+        const closeMenu = document.getElementById("closeMenu");
+
         // Open menu when user clicks menu toggle button
         if (menuToggle) {
-            menuToggle.addEventListener('click', openMenu);
+            menuToggle.addEventListener("click", openMenu);
         }
-    
+
         // Close menu when user clicks close button
         if (closeMenu) {
-            closeMenu.addEventListener('click', closeMenuFunc);
+            closeMenu.addEventListener("click", closeMenuFunc);
         }
-    
+
         // Close menu when clicking outside
         if (sideMenu) {
-            sideMenu.addEventListener('click', function(event) {
-                if (event.target.id === 'sideMenu') {
+            sideMenu.addEventListener("click", function(event) {
+                if (event.target.id === "sideMenu") {
                     closeMenuFunc();
                 }
             });
         }
-    
+
         // Function to open menu
         function openMenu() {
             if (sideMenu) {
-                sideMenu.classList.add('active');
+                sideMenu.classList.add("active");
             }
         }
-    
+
         // Function to close menu
         function closeMenuFunc() {
             if (sideMenu) {
-                sideMenu.classList.remove('active');
+                sideMenu.classList.remove("active");
             }
         }
     </script>
