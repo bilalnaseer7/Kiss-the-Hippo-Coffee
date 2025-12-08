@@ -248,7 +248,7 @@ restartbtn.addEventListener('click', () => {
 })
 
 //Update leaderboard after submit button 
-boardform.addEventListener('submit', function(){
+boardform.addEventListener('submit', function(e){
     e.preventDefault();
     
     const name = enteredname.value; 
@@ -273,3 +273,5 @@ boardform.addEventListener('submit', function(){
         screenDisplay('start');
     }, 7000);
 })
+
+screenDisplay('start');
