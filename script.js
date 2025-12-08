@@ -266,9 +266,11 @@ boardform.addEventListener('submit', function(){
     leaderBoard();
     boardform.classList.add('hidden');
     enteredname.value = '';
-    return false; 
 
     setTimeout(() => {
         screenDisplay('start');
     }, 7000);
+    
+    return false; 
+
 })
