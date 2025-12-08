@@ -1,4 +1,7 @@
 <?php
+// Set timezone to New York
+date_default_timezone_set("America/New_York");
+
 // Get form data from POST - matching the HTML form field names
 $customerName = $_POST['customer_name'];
 $email = $_POST['email'];
