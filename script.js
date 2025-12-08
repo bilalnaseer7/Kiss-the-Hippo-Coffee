@@ -249,6 +249,8 @@ restartbtn.addEventListener('click', () => {
 
 //Update leaderboard after submit button 
 boardform.addEventListener('submit', function(){
+    e.preventDefault();
+    
     const name = enteredname.value; 
     topthreescore.push({
         name: name, 
@@ -270,7 +272,4 @@ boardform.addEventListener('submit', function(){
     setTimeout(() => {
         screenDisplay('start');
     }, 7000);
-    
-    return false; 
-
 })
