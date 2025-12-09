@@ -234,6 +234,10 @@ function endGame(){
 
     leaderBoard(); 
     screenDisplay('over'); 
+
+    setTimeout(() => {
+        screenDisplay('start'); 
+    }, 10000); 
 }
 
 //Buttons 
