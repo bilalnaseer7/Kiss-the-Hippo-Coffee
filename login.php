@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// 如果是提交表单（POST）
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $path = "/home/zs2720/databases";
