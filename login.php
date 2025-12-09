@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if ($row) {
             $_SESSION['username'] = $row['username'];
-            header("Location: index.php");
+            header("Location: index.html");
             exit;
         } else {
             $error = "Wrong username or password.";
