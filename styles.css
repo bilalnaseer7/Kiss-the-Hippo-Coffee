@@ -1,6 +1,6 @@
-/* Kiss the Hippo Coffee - Coffee Marketplace */
+/* Main styles for Kiss the Hippo Coffee website */
 
-/* Body and General Styles */
+/* Basic page styles */
 body {
     margin: 0;
     padding: 0;
@@ -20,7 +20,7 @@ img {
 }
 
 
-/* Top Header Bar Styles */
+/* Top header bar with icons */
 
 .top-header {
     position: fixed;
@@ -71,7 +71,7 @@ img {
 }
 
 
-/* Header Styles */
+/* Main header with logo and navigation */
 
 .header {
     position: fixed;
@@ -168,7 +168,7 @@ img {
 }
 
 
-/* Side Menu Overlay Styles */
+/* Side menu that slides in from the left */
 
 .side-menu-overlay {
     position: fixed;
@@ -308,7 +308,7 @@ img {
 }
 
 
-/* Cart Sidebar Overlay Styles */
+/* Shopping cart sidebar that slides in from the right */
 
 .cart-sidebar-overlay {
     position: fixed;
@@ -581,7 +581,7 @@ img {
 }
 
 
-/* Hero Section Styles */
+/* Hero section at the top of the homepage */
 
 #hero {
     padding-top: 152px;
@@ -648,7 +648,7 @@ img {
 }
 
 
-/* Our Difference Section Styles */
+/* Section explaining our coffee process */
 
 #difference {
     background-color: #1a1a1a;
@@ -710,7 +710,7 @@ img {
 }
 
 
-/* Products Section Styles */
+/* Products section showing coffee beans, equipment, and game */
 
 #products {
     padding: 80px 40px;
@@ -795,7 +795,7 @@ img {
 }
 
 
-/* Mission Section Styles */
+/* Mission statement section */
 
 #mission {
     padding: 80px 40px;
@@ -851,7 +851,7 @@ img {
     cursor: pointer;
 }
 
-/* Coffee Section Styles */
+/* Coffee products listing page */
 #coffee {
     padding: 80px 40px;
     background-color: #F5F1EB;
@@ -959,7 +959,7 @@ img {
     cursor: pointer;
 }
 
-/* Trail section */
+/* Navigation path showing where you are (Home > Shop Coffee > Product) */
 .trail-section {
     margin: 30px auto 15px;
     padding: 0 15px; 
@@ -982,7 +982,7 @@ img {
     color: #ee331b; 
 }
 
-/* Detailed Coffee Bean Selection Section */
+/* Individual coffee product detail page */
 .coffee-detail {
     margin: 0 auto 80px;
     padding: 0 15px;
@@ -1061,7 +1061,7 @@ img {
     border: 1px solid #8B7355; 
 }
 
-/* Form & Options */
+/* Form for selecting size, grind, and adding to cart */
 .form {
     grid-area: form; 
     padding-top: 15px; 
@@ -1120,7 +1120,7 @@ img {
     border-radius: 3px;
 }
 
-/* Game Styles */
+/* Spot the Mug game styles */
 #startscreen, #playscreen, #gameoverscreen {
     margin: 15px auto; 
     background-color: #F5F1EB; 
@@ -1194,7 +1194,7 @@ img {
     text-align: center; 
 }
 
-/* Footer Styles */
+/* Footer at the bottom of the page */
 .footer {
     background-color: #1a1a1a;
     color: #ffffff;
@@ -1288,7 +1288,7 @@ img {
 }
 
 
-/* Media Queries for Responsive Design */
+/* Responsive styles for mobile devices */
 
 @media screen and (max-width: 768px) {
     

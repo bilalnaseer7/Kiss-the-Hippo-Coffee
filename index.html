@@ -6,7 +6,6 @@
     <title>Kiss the Hippo Coffee | Boldly Brewed</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Placeholder styles for preview - remove when adding real images */
         .hero-img {
             background-color: #3d3225;
         }
@@ -17,7 +16,7 @@
             background-color: #6b5d4d;
         }
 
-        /* Newsletter Popup Styles */
+        /* Newsletter popup styles */
         .popup-overlay {
             position: fixed;
             top: 0;
@@ -124,7 +123,7 @@
 </head>
 <body>
 
-    <!-- Newsletter Popup (written directly in HTML like professor does) -->
+    <!-- Newsletter popup for email subscription -->
     <div class="popup-overlay" id="popupOverlay">
         <div class="popup-content">
             <div class="popup-close" id="popupClose">✕</div>
@@ -229,7 +228,7 @@
                 <div class="cart-close-icon" id="closeCart">✕</div>
             </div>
             <div class="cart-items-container" id="cartItemsContainer">
-                <!-- Cart items will be dynamically inserted here -->
+                <!-- Cart items are added here by JavaScript -->
             </div>
             <div class="cart-sidebar-footer">
                 <div class="cart-subtotal">
@@ -389,17 +388,11 @@
     </footer>
 
     <script>
-        // ============================================
-        // NEWSLETTER POPUP FUNCTIONALITY
-        // (Following professor's style: getElementById, addEventListener, classList)
-        // ============================================
+        // Newsletter popup - handles showing and closing the subscription popup
         const popupOverlay = document.getElementById("popupOverlay");
         const popupClose = document.getElementById("popupClose");
 
-        // Close popup when X is clicked
         popupClose.addEventListener("click", closePopup);
-
-        // Close popup when clicking outside
         popupOverlay.addEventListener("click", closeOnOverlayClick);
 
         function closePopup() {
@@ -412,19 +405,14 @@
             }
         }
 
-        // ============================================
-        // CART FUNCTIONALITY
-        // (Following professor's style: for loops, getElementById, string concatenation)
-        // ============================================
-        
-        // Get cart from localStorage
+        // Cart functionality - load cart from localStorage
         let cart = [];
         let cartData = localStorage.getItem("cart");
         if (cartData !== null) {
             cart = JSON.parse(cartData);
         }
 
-        // Select cart elements using getElementById and querySelector
+        // Get all the cart elements we need
         const cartIcon = document.querySelector(".cart-icon");
         const cartIconMenu = document.querySelector(".cart-icon-menu");
         const cartSidebar = document.getElementById("cartSidebar");
@@ -432,20 +420,16 @@
         const cartItemsContainer = document.getElementById("cartItemsContainer");
         const cartSubtotalDisplay = document.getElementById("cartSubtotal");
 
-        // Open cart when clicking cart icon
+        // Open/close cart sidebar
         if (cartIcon) {
             cartIcon.addEventListener("click", openCart);
         }
         if (cartIconMenu) {
             cartIconMenu.addEventListener("click", openCart);
         }
-
-        // Close cart
         if (closeCart) {
             closeCart.addEventListener("click", closeCartFunc);
         }
-
-        // Close cart when clicking outside
         if (cartSidebar) {
             cartSidebar.addEventListener("click", function(event) {
                 if (event.target.id === "cartSidebar") {
@@ -466,33 +450,24 @@
             }
         }
 
-        // ============================================
-        // UPDATE CART COUNT
-        // (Using for loop instead of .reduce - professor's style)
-        // ============================================
+        // Update the cart count in the header
         function updateCartCount() {
             let totalItems = 0;
-
-            // Use for loop like professor does (from 05_Repetition.js)
             for (let i = 0; i < cart.length; i++) {
                 totalItems = totalItems + cart[i].quantity;
             }
 
-            // Update all cart count elements using for loop
             let cartCountElements = document.querySelectorAll(".cart-count");
             for (let i = 0; i < cartCountElements.length; i++) {
                 cartCountElements[i].innerHTML = "(" + totalItems + ")";
             }
         }
 
-        // ============================================
-        // ADD ITEM TO CART
-        // (Using for loop instead of .find - professor's style)
-        // ============================================
+        // Add item to cart - checks if item already exists and updates quantity
         function addToCart(item) {
             let existingItem = null;
 
-            // Use for loop to find existing item (instead of .find)
+            // Check if this item is already in the cart
             for (let i = 0; i < cart.length; i++) {
                 if (cart[i].id === item.id && cart[i].bagSize === item.bagSize && cart[i].grind === item.grind) {
                     existingItem = cart[i];
@@ -511,25 +486,22 @@
             renderCart();
         }
 
-        // ============================================
-        // REMOVE ITEM FROM CART
-        // (Using for loop instead of .filter - professor's style)
-        // ============================================
+        // Remove item from cart
         function removeFromCart(itemId, bagSize, grind) {
             let newCart = [];
 
-            // Use for loop to filter items (instead of .filter)
+            // Loop through cart and only keep items we don't want to remove
             for (let i = 0; i < cart.length; i++) {
                 let item = cart[i];
                 let shouldRemove = false;
 
-                // For equipment items (no bagSize/grind)
+                // Equipment items don't have bagSize or grind
                 if ((bagSize === "" || bagSize === null || bagSize === undefined) && (grind === "" || grind === null || grind === undefined)) {
                     if (item.id === itemId && !item.bagSize && !item.grind) {
                         shouldRemove = true;
                     }
                 } else {
-                    // For coffee items (with bagSize/grind)
+                    // Coffee items have bagSize and grind
                     if (item.id === itemId && item.bagSize === bagSize && item.grind === grind) {
                         shouldRemove = true;
                     }
@@ -546,25 +518,22 @@
             renderCart();
         }
 
-        // ============================================
-        // UPDATE ITEM QUANTITY
-        // (Using for loop instead of .find - professor's style)
-        // ============================================
+        // Update quantity of an item in the cart
         function updateQuantity(itemId, bagSize, grind, newQuantity) {
             let foundItem = null;
 
-            // Use for loop to find item (instead of .find)
+            // Find the item in the cart
             for (let i = 0; i < cart.length; i++) {
                 let item = cart[i];
 
-                // For equipment items (no bagSize/grind)
+                // Equipment items don't have bagSize or grind
                 if ((bagSize === "" || bagSize === null || bagSize === undefined) && (grind === "" || grind === null || grind === undefined)) {
                     if (item.id === itemId && !item.bagSize && !item.grind) {
                         foundItem = item;
                         break;
                     }
                 } else {
-                    // For coffee items (with bagSize/grind)
+                    // Coffee items have bagSize and grind
                     if (item.id === itemId && item.bagSize === bagSize && item.grind === grind) {
                         foundItem = item;
                         break;
@@ -584,10 +553,7 @@
             }
         }
 
-        // ============================================
-        // RENDER CART ITEMS
-        // (Using for loop and string concatenation - professor's style)
-        // ============================================
+        // Display all cart items in the sidebar
         function renderCart() {
             if (!cartItemsContainer) {
                 return;
@@ -602,7 +568,7 @@
             let html = "";
             let subtotal = 0;
 
-            // Use for loop instead of .forEach (professor's style from 06_Arrays.js)
+            // Build HTML for each item using string concatenation
             for (let i = 0; i < cart.length; i++) {
                 let item = cart[i];
                 let itemPrice = parseFloat(item.price);
@@ -610,24 +576,21 @@
                 let itemTotal = itemPrice * itemQty;
                 subtotal = subtotal + itemTotal;
 
-                // Build HTML using string concatenation (professor's style from 02SubmitEventNewDocWithCSS.html)
                 html = html + "<div class='cart-item'>";
                 html = html + "<img src='" + item.image + "' alt='" + item.name + "' class='cart-item-image' onerror=\"this.style.backgroundColor='#8B7355'\">";
                 html = html + "<div class='cart-item-details'>";
                 html = html + "<h3 class='cart-item-name'>" + item.name + "</h3>";
                 html = html + "<p class='cart-item-price'>$" + itemPrice.toFixed(2) + " USD</p>";
 
-                // Add bag size if exists
                 if (item.bagSize) {
                     html = html + "<p class='cart-item-options'>Size: " + item.bagSize + "</p>";
                 }
 
-                // Add grind if exists
                 if (item.grind) {
                     html = html + "<p class='cart-item-options'>Grind: " + item.grind + "</p>";
                 }
 
-                // Quantity controls
+                // Quantity buttons
                 let bagSizeVal = item.bagSize || "";
                 let grindVal = item.grind || "";
 
@@ -637,7 +600,6 @@
                 html = html + "<button class='quantity-btn' onclick=\"updateQuantity('" + item.id + "', '" + bagSizeVal + "', '" + grindVal + "', " + (item.quantity + 1) + ")\">+</button>";
                 html = html + "</div>";
 
-                // Remove button
                 html = html + "<button class='cart-item-remove' onclick=\"removeFromCart('" + item.id + "', '" + bagSizeVal + "', '" + grindVal + "')\">Remove</button>";
 
                 html = html + "</div>";
@@ -648,34 +610,26 @@
             cartSubtotalDisplay.innerHTML = "$" + subtotal.toFixed(2) + " USD";
         }
 
-        // Make functions globally available
+        // Make these functions available globally so other pages can use them
         window.addToCart = addToCart;
         window.removeFromCart = removeFromCart;
         window.updateQuantity = updateQuantity;
 
-        // Initialize cart display
+        // Show cart when page loads
         updateCartCount();
         renderCart();
 
-        // ============================================
-        // MENU FUNCTIONALITY
-        // (Following professor's style: getElementById, addEventListener, classList)
-        // ============================================
+        // Side menu toggle functionality
         const menuToggle = document.getElementById("menuToggle");
         const sideMenu = document.getElementById("sideMenu");
         const closeMenu = document.getElementById("closeMenu");
 
-        // Open menu when user clicks menu toggle button
         if (menuToggle) {
             menuToggle.addEventListener("click", openMenu);
         }
-
-        // Close menu when user clicks close button
         if (closeMenu) {
             closeMenu.addEventListener("click", closeMenuFunc);
         }
-
-        // Close menu when clicking outside
         if (sideMenu) {
             sideMenu.addEventListener("click", function(event) {
                 if (event.target.id === "sideMenu") {
@@ -684,14 +638,12 @@
             });
         }
 
-        // Function to open menu
         function openMenu() {
             if (sideMenu) {
                 sideMenu.classList.add("active");
             }
         }
 
-        // Function to close menu
         function closeMenuFunc() {
             if (sideMenu) {
                 sideMenu.classList.remove("active");

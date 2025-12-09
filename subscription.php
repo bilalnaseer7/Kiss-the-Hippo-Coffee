@@ -1,7 +1,9 @@
 <?php
+// Connect to database
 $path = "/home/bn2168/databases";
 $db = new SQLite3($path . "/users.db");
 
+// Create subscriptions table if it doesn't exist yet
 $db->exec("CREATE TABLE IF NOT EXISTS subscriptions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     email TEXT,
@@ -9,19 +11,24 @@ $db->exec("CREATE TABLE IF NOT EXISTS subscriptions (
     time TEXT
 )");
 
+// Set timezone for date/time
 date_default_timezone_set("America/New_York");
 
+// Get email from form
 $email = $_POST['email'];
 $date = date("m/d/Y");
 $time = date("h:i A");
 
+// Check if this email is already in the database
 $check = $db->prepare("SELECT email FROM subscriptions WHERE email = :email");
 $check->bindValue(":email", $email, SQLITE3_TEXT);
 $result = $check->execute();
 
 if ($result->fetchArray()) {
+    // Email already exists
     $already = true;
 } else {
+    // Email is new, so add it to database
     $already = false;
 
     $stmt = $db->prepare("INSERT INTO subscriptions (email, date, time) VALUES (:email, :date, :time)");
@@ -123,7 +130,6 @@ if ($result->fetchArray()) {
             <?php echo $email; ?>
         </div>
 
-        <!-- FIXED: Returns to homepage instead of 404 -->
         <a href="index.html" class="home-link">TRY AGAIN</a>
 
     <?php } else { ?>

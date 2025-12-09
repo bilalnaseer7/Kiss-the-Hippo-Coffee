@@ -6,7 +6,7 @@
     <title>Checkout | Kiss the Hippo Coffee</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* checkout page styles */
+        /* Checkout page styles */
         .checkout-section {
             padding-top: 130px;
             padding-bottom: 80px;
@@ -114,7 +114,7 @@
             font-family: Arial, Helvetica, sans-serif;
         }
 
-        /* order summary styles */
+        /* Order summary sidebar styles */
         .summary-title {
             font-family: Georgia, "Times New Roman", Times, serif;
             font-size: 22px;
@@ -270,7 +270,7 @@
             text-decoration: underline;
         }
 
-        /* Responsive */
+        /* Responsive styles for smaller screens */
         @media screen and (max-width: 900px) {
             .checkout-container {
                 flex-direction: column;
@@ -380,7 +380,7 @@
     <section class="checkout-section">
         <div class="checkout-container">
 
-            <!-- Left Side: Checkout Form (Written directly in HTML like professor does) -->
+            <!-- Checkout form on the left -->
             <div class="checkout-form-section">
                 <h1 class="checkout-title">Checkout</h1>
 
@@ -473,7 +473,7 @@
                         </div>
                     </div>
 
-                    <!-- Hidden fields for PHP (values set by JavaScript) -->
+                    <!-- Hidden fields that get filled by JavaScript before form submission -->
                     <input type="hidden" id="cartData" name="cart_data">
                     <input type="hidden" id="subtotalInput" name="subtotal">
                     <input type="hidden" id="shippingInput" name="shipping">
@@ -487,13 +487,13 @@
                 <a href="index.html" class="back-link">← Back to Shopping</a>
             </div>
 
-            <!-- Right Side: Order Summary -->
+            <!-- Order summary on the right -->
             <div class="checkout-summary-section">
                 <h2 class="summary-title">Order Summary</h2>
 
-                <!-- Cart items displayed here by JavaScript -->
+                <!-- Cart items are displayed here by JavaScript -->
                 <div class="summary-items" id="cartItems">
-                    <!-- Items will be added by JavaScript -->
+                    <!-- Items get added here dynamically -->
                 </div>
 
                 <div class="summary-row">
@@ -566,14 +566,14 @@
     </footer>
 
     <script>
-        // get cart from storage
+        // Load cart from localStorage
         let cart = [];
         let cartData = localStorage.getItem('cart');
         if (cartData !== null) {
             cart = JSON.parse(cartData);
         }
 
-        // select dom elements
+        // Get all the elements we need for the checkout page
         const headerCartCount = document.getElementById('headerCartCount');
         const menuCartCount = document.getElementById('menuCartCount');
         const cartItemsDiv = document.getElementById('cartItems');
@@ -582,27 +582,27 @@
         const taxDisplay = document.getElementById('taxDisplay');
         const totalDisplay = document.getElementById('totalDisplay');
 
-        // hidden input fields
+        // Hidden form fields that get sent to PHP
         const cartDataInput = document.getElementById('cartData');
         const subtotalInput = document.getElementById('subtotalInput');
         const shippingInput = document.getElementById('shippingInput');
         const taxInput = document.getElementById('taxInput');
         const totalInput = document.getElementById('totalInput');
 
-        // menu elements
+        // Menu elements
         const menuToggle = document.getElementById('menuToggle');
         const sideMenu = document.getElementById('sideMenu');
         const closeMenuBtn = document.getElementById('closeMenu');
 
-        // calculation variables
+        // Variables for calculations
         let subtotal = 0;
         let shipping = 5.00;
         let tax = 0;
         let total = 0;
 
-        // Function to render cart items
+        // Display all cart items and calculate totals
         function renderCart() {
-            // Reload cart from storage
+            // Reload cart from storage in case it changed
             let cartData = localStorage.getItem('cart');
             if (cartData !== null) {
                 cart = JSON.parse(cartData);
@@ -610,7 +610,7 @@
                 cart = [];
             }
 
-            // Update cart count
+            // Update cart count in header
             let totalItems = 0;
             for (let i = 0; i < cart.length; i++) {
                 totalItems = totalItems + cart[i].quantity;
@@ -626,7 +626,7 @@
                 subtotal = subtotal + (itemPrice * itemQty);
             }
 
-            // Calculate tax and total
+            // Calculate tax (8%) and total
             tax = subtotal * 0.08;
             total = subtotal + shipping + tax;
 
@@ -636,6 +636,7 @@
             } else {
                 let itemsHTML = "";
 
+                // Build HTML for each item
                 for (let i = 0; i < cart.length; i++) {
                     let item = cart[i];
                     let itemTotal = parseFloat(item.price) * parseFloat(item.quantity);
@@ -655,6 +656,7 @@
                         itemsHTML += "<p class='summary-item-options'>Grind: " + item.grind + "</p>";
                     }
 
+                    // Quantity controls
                     itemsHTML += "<div class='summary-item-quantity'>";
                     itemsHTML += "<button class='summary-quantity-btn' onclick=\"updateQuantity('" + item.id + "', '" + bagSize + "', '" + grind + "', " + (item.quantity - 1) + ")\">−</button>";
                     itemsHTML += "<span class='summary-quantity-value'>" + item.quantity + "</span>";
@@ -669,13 +671,13 @@
                 cartItemsDiv.innerHTML = itemsHTML;
             }
 
-            // Update totals display
+            // Update all the totals on the page
             subtotalDisplay.innerHTML = "$" + subtotal.toFixed(2);
             shippingDisplay.innerHTML = "$" + shipping.toFixed(2);
             taxDisplay.innerHTML = "$" + tax.toFixed(2);
             totalDisplay.innerHTML = "$" + total.toFixed(2) + " USD";
 
-            // Set hidden field values
+            // Set values for hidden form fields
             cartDataInput.value = JSON.stringify(cart);
             subtotalInput.value = subtotal.toFixed(2);
             shippingInput.value = shipping.toFixed(2);
@@ -693,12 +695,13 @@
                 cart = [];
             }
 
+            // Filter out the item we want to remove
             cart = cart.filter(item => {
-                // For equipment items (no bagSize/grind)
+                // Equipment items don't have bagSize or grind
                 if ((!bagSize || bagSize === '') && (!grind || grind === '')) {
                     return !(item.id === itemId && !item.bagSize && !item.grind);
                 }
-                // For coffee items (with bagSize/grind)
+                // Coffee items have bagSize and grind
                 return !(item.id === itemId && item.bagSize === bagSize && item.grind === grind);
             });
 
@@ -706,7 +709,7 @@
             renderCart();
         }
 
-        // Update item quantity
+        // Update quantity of an item
         function updateQuantity(itemId, bagSize, grind, newQuantity) {
             // Reload cart from storage
             let cartData = localStorage.getItem('cart');
@@ -717,13 +720,13 @@
             }
 
             let item;
-            // For equipment items (no bagSize/grind)
+            // Equipment items don't have bagSize or grind
             if ((!bagSize || bagSize === '') && (!grind || grind === '')) {
                 item = cart.find(item => 
                     item.id === itemId && !item.bagSize && !item.grind
                 );
             } else {
-                // For coffee items (with bagSize/grind)
+                // Coffee items have bagSize and grind
                 item = cart.find(item => 
                     item.id === itemId && item.bagSize === bagSize && item.grind === grind
                 );
@@ -740,18 +743,18 @@
             }
         }
 
-        // Make functions globally available
+        // Make functions available globally
         window.removeFromCart = removeFromCart;
         window.updateQuantity = updateQuantity;
 
-        // Initial render
+        // Show cart when page loads
         renderCart();
 
-        // form validation on submit
+        // Form validation - check all required fields before submitting
         const formobj = document.forms[0];
 
         formobj.addEventListener("submit", function(event) {
-            // Reload cart from storage before validation
+            // Reload cart to make sure we have the latest data
             let cartData = localStorage.getItem('cart');
             if (cartData !== null) {
                 cart = JSON.parse(cartData);
@@ -759,41 +762,35 @@
                 cart = [];
             }
 
-            // check if cart is empty
+            // Make sure cart isn't empty
             if (cart.length === 0) {
                 alert("Your cart is empty. Please add items before checking out.");
                 event.preventDefault();
                 return;
             }
 
-            // update cart data before submit
+            // Update cart data in form before submitting
             cartDataInput.value = JSON.stringify(cart);
 
-            // loop through form elements for validation
+            // Check all form fields
             for (let i = 0; i < formobj.elements.length - 1; i++) {
                 const element = formobj.elements[i];
 
-                // skip hidden fields
+                // Skip hidden fields, submit button, optional fields, and readonly fields
                 if (element.type === "hidden") {
                     continue;
                 }
-
-                // skip submit button
                 if (element.type === "submit") {
                     continue;
                 }
-
-                // skip optional fields
                 if (element.name === "phone" || element.name === "address2") {
                     continue;
                 }
-
-                // skip readonly fields
                 if (element.readOnly === true) {
                     continue;
                 }
 
-                // check if required field is empty
+                // Check if required field is empty
                 if (element.value === "" || element.value === null) {
                     alert("Please enter a value for " + element.name);
                     element.focus();
@@ -802,11 +799,9 @@
                     return;
                 }
             }
-
-            // form is valid
         });
 
-        // menu toggle functionality
+        // Side menu toggle
         menuToggle.addEventListener("click", openMenu);
         closeMenuBtn.addEventListener("click", closeMenu);
         sideMenu.addEventListener("click", closeOnOverlay);
