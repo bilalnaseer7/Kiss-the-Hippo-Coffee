@@ -225,19 +225,18 @@ function endGame(){
         }
     }
 
+    screenDisplay('over'); 
+    leaderBoard(); 
+
     if (highscore){
         boardform.classList.remove('hidden'); 
     }
     else{
         boardform.classList.add('hidden'); 
+        setTimeout(() =>{
+            screenDisplay('start');
+        },10000);
     }
-
-    leaderBoard(); 
-    screenDisplay('over'); 
-
-    setTimeout(() => {
-        screenDisplay('start'); 
-    }, 10000); 
 }
 
 //Buttons 
