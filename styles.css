@@ -1147,11 +1147,6 @@ img {
     align-items: center; 
 }
 
-#restartbtn {
-    position: absolute; 
-    bottom: 50px; 
-}
-
 .game-title {
     font-family: Georgia, "Times New Roman", Times, serif;
     font-size: 38px;
