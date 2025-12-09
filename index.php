@@ -1,0 +1,726 @@
+<?php
+session_start();
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiss the Hippo Coffee | Boldly Brewed</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Placeholder styles for preview - remove when adding real images */
+        .hero-img {
+            background-color: #3d3225;
+        }
+        .product-img {
+            background-color: #8B7355;
+        }
+        .mission-img {
+            background-color: #6b5d4d;
+        }
+
+        /* Newsletter Popup Styles */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .popup-overlay.hidden {
+            display: none;
+        }
+
+        .popup-content {
+            background-color: #F5F1EB;
+            padding: 50px 40px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            border: 1px solid #e0e0e0;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #1a1a1a;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .popup-close:hover {
+            color: #666;
+        }
+
+        .popup-title {
+            font-family: Georgia, "Times New Roman", Times, serif;
+            font-size: 28px;
+            font-weight: normal;
+            color: #1a1a1a;
+            margin: 0 0 15px 0;
+        }
+
+        .popup-text {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            color: #666;
+            margin: 0 0 30px 0;
+            line-height: 1.6;
+        }
+
+        .popup-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .popup-input {
+            width: 100%;
+            padding: 15px;
+            font-family: Georgia, "Times New Roman", Times, serif;
+            font-size: 15px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            color: #1a1a1a;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .popup-input:focus {
+            outline: none;
+            border-color: #8B7355;
+        }
+
+        .popup-submit {
+            width: 100%;
+            padding: 15px;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .popup-submit:hover {
+            background-color: #333;
+        }
+
+        .popup-note {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 11px;
+            color: #999;
+            margin: 20px 0 0 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Newsletter Popup (written directly in HTML like professor does) -->
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-content">
+            <div class="popup-close" id="popupClose">✕</div>
+            <h2 class="popup-title">Join the Hippo Club</h2>
+            <p class="popup-text">Subscribe to our newsletter for exclusive offers, brewing tips, and first access to new roasts.</p>
+            
+            <form class="popup-form" action="subscription.php" method="POST">
+                <input type="email" id="popupEmail" name="email" class="popup-input" placeholder="Enter your email address" required>
+                <input type="submit" value="SUBSCRIBE" class="popup-submit">
+            </form>
+            
+            <p class="popup-note">No spam, ever. Unsubscribe anytime.</p>
+        </div>
+    </div>
+
+    <!-- Top Header Bar -->
+    <div class="top-header">
+        <div class="top-header-icons">
+            <div class="grid-icon">
+                <span class="grid-line"></span>
+                <span class="grid-line"></span>
+                <span class="grid-line"></span>
+                <span class="grid-line"></span>
+            </div>
+            <span class="header-separator">|</span>
+            <div class="circle-icon"></div>
+        </div>
+    </div>
+
+    <!-- Header / Navigation -->
+    <header class="header">
+        <div class="header-left">
+            <div class="menu-icon" id="menuToggle">
+                <span class="menu-line"></span>
+                <span class="menu-line"></span>
+                <span class="menu-line"></span>
+            </div>
+            <span class="shop-link">SHOP</span>
+        </div>
+
+        <div class="logo">
+            <a href="index.php">
+                <img src="images/logo.png" alt="Kiss the Hippo Logo" class="logo-img">
+                <span class="logo-text">KISS THE HIPPO</span>
+            </a>
+        </div>
+
+        <div class="header-right">
+
+            <?php if (isset($_SESSION['username'])): ?>
+                <div class="auth-links">
+                    <span class="auth-link">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                    <span class="auth-divider">|</span>
+                    <a href="logout.php" class="auth-link">Logout</a>
+                </div>
+            <?php else: ?>
+                <div class="auth-links">
+                    <a href="login.php" class="auth-link">Login</a>
+                    <span class="auth-divider">|</span>
+                <a href="register.php" class="auth-link">Register</a>
+                </div>
+            <?php endif; ?>
+
+
+            <div class="cart-icon">
+                <img src="images/shoppingcart.svg" alt="Shopping Cart" class="cart-img">
+                <span class="cart-count">(0)</span>
+            </div>
+        </div>
+
+
+
+    </header>
+
+    <!-- Side Menu Overlay -->
+    <div class="side-menu-overlay" id="sideMenu">
+        <div class="side-menu-content">
+            <div class="side-menu-header">
+                <div class="side-menu-logo">
+                    <a href="index.php">
+                        <img src="images/logo.png" alt="Kiss the Hippo Logo" class="mountain-logo">
+                    </a>
+                </div>
+                <div class="side-menu-header-icons">
+                    <div class="search-icon">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8" cy="8" r="6" stroke="#1a1a1a" stroke-width="1.5" fill="none"/>
+                            <path d="M13 13L16 16" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="cart-icon-menu">
+                        <img src="images/shoppingcart.svg" alt="Shopping Cart" class="cart-img">
+                        <span class="cart-count">(0)</span>
+                    </div>
+                    <div class="close-icon" id="closeMenu">✕</div>
+                </div>
+            </div>
+
+            <nav class="side-menu-nav">
+                <a href="coffeebean.html" class="nav-link">Shop Coffee</a>
+                <a href="menu.html" class="nav-link">Menu</a>
+                <a href="#" class="nav-link">Subscriptions</a>
+                <a href="#" class="nav-link">Our Story</a>
+                <a href="game.html" class="nav-link">Spot the Mug</a>
+            </nav>
+
+            <div class="side-menu-footer">
+                <div class="currency-selector">
+                    <span>United States (USD $)</span>
+                    <span class="chevron">▼</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar Overlay -->
+    <div class="cart-sidebar-overlay" id="cartSidebar">
+        <div class="cart-sidebar-content">
+            <div class="cart-sidebar-header">
+                <h2 class="cart-sidebar-title">Your cart</h2>
+                <div class="cart-close-icon" id="closeCart">✕</div>
+            </div>
+            <div class="cart-items-container" id="cartItemsContainer">
+                <!-- Cart items will be dynamically inserted here -->
+            </div>
+            <div class="cart-sidebar-footer">
+                <div class="cart-subtotal">
+                    <span class="cart-subtotal-label">Subtotal</span>
+                    <span class="cart-subtotal-amount" id="cartSubtotal">$0.00 USD</span>
+                </div>
+                <p class="cart-tax-note">Tax included. Shipping calculated at checkout.</p>
+                <a href="shoppingcart.html" class="cart-checkout-btn">CHECK OUT</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Kiss the Hippo. Boldly Brewed.</h1>
+            <p class="hero-tagline">Every bean has a story, every cup an experience. We roast with passion, serve with purpose, and never compromise on quality.</p>
+        </div>
+
+        <div class="hero-images">
+            <div class="hero-image-left">
+                <div class="hero-img" style="background-image: url('images/sip2.jpg'); background-size: cover; background-repeat: no-repeat;"></div>
+                <p class="hero-image-text">Experience origin<br>to obsession in every<br>sip.</p>
+            </div>
+            <div class="hero-image-right">
+                <div class="hero-img" style="background-image: url('images/coffee_world.jpg'); background-size: cover; background-repeat: no-repeat;"></div>
+                <p class="hero-image-text">Step inside the<br>world of Kiss the Hippo.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Difference Section -->
+    <section id="difference" class="difference-section">
+        <div class="difference-header">
+            <h2 class="difference-title">From Origin to Obsession</h2>
+            <p class="difference-intro">At Kiss the Hippo, coffee is more than a drink — it's a craft. We source the finest beans from sustainable farms, roast them to perfection in-house, and serve each cup with care. From the farmer's hands to your morning ritual, every step is intentional.</p>
+        </div>
+
+        <div class="difference-cards">
+            <div class="difference-card difference-card-first">
+                <h3 class="card-title">Source</h3>
+                <p class="card-text">We partner directly with farmers across Ethiopia, Colombia, and beyond. Each origin is selected for its unique character and sustainable practices — because great coffee starts with great relationships.</p>
+            </div>
+
+            <div class="difference-card">
+                <h3 class="card-title">Roast</h3>
+                <p class="card-text">Our master roasters craft each batch with precision. We explore light, medium, and dark profiles to unlock every bean's potential — where science meets artistry, and flavor comes alive.</p>
+            </div>
+
+            <div class="difference-card">
+                <h3 class="card-title">Serve</h3>
+                <p class="card-text">The final moment matters most. Whether poured by our baristas or brewed at home, every cup completes the journey — a ritual of warmth, quality, and connection.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section id="products" class="products-section">
+        <div class="products-header">
+            <h2 class="products-title">Explore Our Collection</h2>
+            <p class="products-intro">From single-origin beans to premium brewing gear, find everything you need for the perfect cup.</p>
+        </div>
+
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-image">
+                    <div class="product-img" style="background-image: url('images/beans.jpg'); background-size: cover; background-repeat: no-repeat;"></div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Coffee Beans</h3>
+                    <p class="product-desc">Single-origin and signature blends, freshly roasted for maximum flavor.</p>
+                    <a href="coffeebean.html" class="product-link">Shop Beans</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <div class="product-img" style="background-image: url('images/brewing.jpg'); background-size: cover; background-repeat: no-repeat;"></div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Brewing Equipment</h3>
+                    <p class="product-desc">Pour-overs, French presses, grinders, and tools for the home barista.</p>
+                    <a href="coffeebean.html" class="product-link">Shop Equipment</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <div class="product-img" style="background-image: url('images/game2.jpg'); background-size: cover; background-repeat: no-repeat;"></div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Game</h3>
+                    <p class="product-desc">Play game to reveal rewards.</p>
+                    <a href="game.html" class="product-link">Play Game</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Statement Section -->
+    <section id="mission" class="mission-section">
+        <div class="mission-content">
+            <div class="mission-image">
+                <div class="mission-img" style="background-image: url('images/farmer_coffee.jpg'); background-size: cover; background-repeat: no-repeat;"></div>
+            </div>
+            <div class="mission-text">
+                <h2 class="mission-title">We Rise by Lifting Others</h2>
+                <p class="mission-desc">For every bag sold, we reinvest in the farming communities that make our coffee possible. Better wages, sustainable practices, and a future where everyone in the chain thrives.</p>
+                <span class="mission-link">Learn Our Story</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span class="footer-logo">KISS THE HIPPO</span>
+                <p class="footer-tagline">Boldly Brewed Since 2020</p>
+            </div>
+
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4 class="footer-heading">Shop</h4>
+                    <p class="footer-link">Coffee Beans</p>
+                    <p class="footer-link">Equipment</p>
+                    <p class="footer-link">Merchandise</p>
+                    <p class="footer-link">Subscriptions</p>
+                </div>
+
+                <div class="footer-column">
+                    <h4 class="footer-heading">About</h4>
+                    <p class="footer-link">Our Story</p>
+                    <p class="footer-link">Sustainability</p>
+                    <p class="footer-link">Press</p>
+                </div>
+
+                <div class="footer-column">
+                    <h4 class="footer-heading">Help</h4>
+                    <p class="footer-link">Contact Us</p>
+                    <p class="footer-link">FAQs</p>
+                    <p class="footer-link">Shipping</p>
+                    <p class="footer-link">Returns</p>
+                </div>
+            </div>
+
+            <div class="footer-social">
+                <span class="social-icon">Instagram</span>
+                <span class="social-icon">Twitter</span>
+                <span class="social-icon">Facebook</span>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p class="copyright">© 2025 Kiss the Hippo Coffee. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================
+        // NEWSLETTER POPUP FUNCTIONALITY
+        // (Following professor's style: getElementById, addEventListener, classList)
+        // ============================================
+        const popupOverlay = document.getElementById("popupOverlay");
+        const popupClose = document.getElementById("popupClose");
+
+        // Close popup when X is clicked
+        popupClose.addEventListener("click", closePopup);
+
+        // Close popup when clicking outside
+        popupOverlay.addEventListener("click", closeOnOverlayClick);
+
+        function closePopup() {
+            popupOverlay.classList.add("hidden");
+        }
+
+        function closeOnOverlayClick(event) {
+            if (event.target.id === "popupOverlay") {
+                popupOverlay.classList.add("hidden");
+            }
+        }
+
+        // ============================================
+        // CART FUNCTIONALITY
+        // (Following professor's style: for loops, getElementById, string concatenation)
+        // ============================================
+        
+        // Get cart from localStorage
+        let cart = [];
+        let cartData = localStorage.getItem("cart");
+        if (cartData !== null) {
+            cart = JSON.parse(cartData);
+        }
+
+        // Select cart elements using getElementById and querySelector
+        const cartIcon = document.querySelector(".cart-icon");
+        const cartIconMenu = document.querySelector(".cart-icon-menu");
+        const cartSidebar = document.getElementById("cartSidebar");
+        const closeCart = document.getElementById("closeCart");
+        const cartItemsContainer = document.getElementById("cartItemsContainer");
+        const cartSubtotalDisplay = document.getElementById("cartSubtotal");
+
+        // Open cart when clicking cart icon
+        if (cartIcon) {
+            cartIcon.addEventListener("click", openCart);
+        }
+        if (cartIconMenu) {
+            cartIconMenu.addEventListener("click", openCart);
+        }
+
+        // Close cart
+        if (closeCart) {
+            closeCart.addEventListener("click", closeCartFunc);
+        }
+
+        // Close cart when clicking outside
+        if (cartSidebar) {
+            cartSidebar.addEventListener("click", function(event) {
+                if (event.target.id === "cartSidebar") {
+                    closeCartFunc();
+                }
+            });
+        }
+
+        function openCart() {
+            if (cartSidebar) {
+                cartSidebar.classList.add("active");
+            }
+        }
+
+        function closeCartFunc() {
+            if (cartSidebar) {
+                cartSidebar.classList.remove("active");
+            }
+        }
+
+        // ============================================
+        // UPDATE CART COUNT
+        // (Using for loop instead of .reduce - professor's style)
+        // ============================================
+        function updateCartCount() {
+            let totalItems = 0;
+
+            // Use for loop like professor does (from 05_Repetition.js)
+            for (let i = 0; i < cart.length; i++) {
+                totalItems = totalItems + cart[i].quantity;
+            }
+
+            // Update all cart count elements using for loop
+            let cartCountElements = document.querySelectorAll(".cart-count");
+            for (let i = 0; i < cartCountElements.length; i++) {
+                cartCountElements[i].innerHTML = "(" + totalItems + ")";
+            }
+        }
+
+        // ============================================
+        // ADD ITEM TO CART
+        // (Using for loop instead of .find - professor's style)
+        // ============================================
+        function addToCart(item) {
+            let existingItem = null;
+
+            // Use for loop to find existing item (instead of .find)
+            for (let i = 0; i < cart.length; i++) {
+                if (cart[i].id === item.id && cart[i].bagSize === item.bagSize && cart[i].grind === item.grind) {
+                    existingItem = cart[i];
+                    break;
+                }
+            }
+
+            if (existingItem !== null) {
+                existingItem.quantity = existingItem.quantity + item.quantity;
+            } else {
+                cart.push(item);
+            }
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCartCount();
+            renderCart();
+        }
+
+        // ============================================
+        // REMOVE ITEM FROM CART
+        // (Using for loop instead of .filter - professor's style)
+        // ============================================
+        function removeFromCart(itemId, bagSize, grind) {
+            let newCart = [];
+
+            // Use for loop to filter items (instead of .filter)
+            for (let i = 0; i < cart.length; i++) {
+                let item = cart[i];
+                let shouldRemove = false;
+
+                // For equipment items (no bagSize/grind)
+                if ((bagSize === "" || bagSize === null || bagSize === undefined) && (grind === "" || grind === null || grind === undefined)) {
+                    if (item.id === itemId && !item.bagSize && !item.grind) {
+                        shouldRemove = true;
+                    }
+                } else {
+                    // For coffee items (with bagSize/grind)
+                    if (item.id === itemId && item.bagSize === bagSize && item.grind === grind) {
+                        shouldRemove = true;
+                    }
+                }
+
+                if (shouldRemove === false) {
+                    newCart.push(item);
+                }
+            }
+
+            cart = newCart;
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCartCount();
+            renderCart();
+        }
+
+        // ============================================
+        // UPDATE ITEM QUANTITY
+        // (Using for loop instead of .find - professor's style)
+        // ============================================
+        function updateQuantity(itemId, bagSize, grind, newQuantity) {
+            let foundItem = null;
+
+            // Use for loop to find item (instead of .find)
+            for (let i = 0; i < cart.length; i++) {
+                let item = cart[i];
+
+                // For equipment items (no bagSize/grind)
+                if ((bagSize === "" || bagSize === null || bagSize === undefined) && (grind === "" || grind === null || grind === undefined)) {
+                    if (item.id === itemId && !item.bagSize && !item.grind) {
+                        foundItem = item;
+                        break;
+                    }
+                } else {
+                    // For coffee items (with bagSize/grind)
+                    if (item.id === itemId && item.bagSize === bagSize && item.grind === grind) {
+                        foundItem = item;
+                        break;
+                    }
+                }
+            }
+
+            if (foundItem !== null) {
+                if (newQuantity <= 0) {
+                    removeFromCart(itemId, bagSize, grind);
+                } else {
+                    foundItem.quantity = newQuantity;
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    updateCartCount();
+                    renderCart();
+                }
+            }
+        }
+
+        // ============================================
+        // RENDER CART ITEMS
+        // (Using for loop and string concatenation - professor's style)
+        // ============================================
+        function renderCart() {
+            if (!cartItemsContainer) {
+                return;
+            }
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = "<div class='cart-empty'>Your cart is empty</div>";
+                cartSubtotalDisplay.innerHTML = "$0.00 USD";
+                return;
+            }
+
+            let html = "";
+            let subtotal = 0;
+
+            // Use for loop instead of .forEach (professor's style from 06_Arrays.js)
+            for (let i = 0; i < cart.length; i++) {
+                let item = cart[i];
+                let itemPrice = parseFloat(item.price);
+                let itemQty = parseFloat(item.quantity);
+                let itemTotal = itemPrice * itemQty;
+                subtotal = subtotal + itemTotal;
+
+                // Build HTML using string concatenation (professor's style from 02SubmitEventNewDocWithCSS.html)
+                html = html + "<div class='cart-item'>";
+                html = html + "<img src='" + item.image + "' alt='" + item.name + "' class='cart-item-image' onerror=\"this.style.backgroundColor='#8B7355'\">";
+                html = html + "<div class='cart-item-details'>";
+                html = html + "<h3 class='cart-item-name'>" + item.name + "</h3>";
+                html = html + "<p class='cart-item-price'>$" + itemPrice.toFixed(2) + " USD</p>";
+
+                // Add bag size if exists
+                if (item.bagSize) {
+                    html = html + "<p class='cart-item-options'>Size: " + item.bagSize + "</p>";
+                }
+
+                // Add grind if exists
+                if (item.grind) {
+                    html = html + "<p class='cart-item-options'>Grind: " + item.grind + "</p>";
+                }
+
+                // Quantity controls
+                let bagSizeVal = item.bagSize || "";
+                let grindVal = item.grind || "";
+
+                html = html + "<div class='cart-item-quantity'>";
+                html = html + "<button class='quantity-btn' onclick=\"updateQuantity('" + item.id + "', '" + bagSizeVal + "', '" + grindVal + "', " + (item.quantity - 1) + ")\">−</button>";
+                html = html + "<span class='quantity-value'>" + item.quantity + "</span>";
+                html = html + "<button class='quantity-btn' onclick=\"updateQuantity('" + item.id + "', '" + bagSizeVal + "', '" + grindVal + "', " + (item.quantity + 1) + ")\">+</button>";
+                html = html + "</div>";
+
+                // Remove button
+                html = html + "<button class='cart-item-remove' onclick=\"removeFromCart('" + item.id + "', '" + bagSizeVal + "', '" + grindVal + "')\">Remove</button>";
+
+                html = html + "</div>";
+                html = html + "</div>";
+            }
+
+            cartItemsContainer.innerHTML = html;
+            cartSubtotalDisplay.innerHTML = "$" + subtotal.toFixed(2) + " USD";
+        }
+
+        // Make functions globally available
+        window.addToCart = addToCart;
+        window.removeFromCart = removeFromCart;
+        window.updateQuantity = updateQuantity;
+
+        // Initialize cart display
+        updateCartCount();
+        renderCart();
+
+        // ============================================
+        // MENU FUNCTIONALITY
+        // (Following professor's style: getElementById, addEventListener, classList)
+        // ============================================
+        const menuToggle = document.getElementById("menuToggle");
+        const sideMenu = document.getElementById("sideMenu");
+        const closeMenu = document.getElementById("closeMenu");
+
+        // Open menu when user clicks menu toggle button
+        if (menuToggle) {
+            menuToggle.addEventListener("click", openMenu);
+        }
+
+        // Close menu when user clicks close button
+        if (closeMenu) {
+            closeMenu.addEventListener("click", closeMenuFunc);
+        }
+
+        // Close menu when clicking outside
+        if (sideMenu) {
+            sideMenu.addEventListener("click", function(event) {
+                if (event.target.id === "sideMenu") {
+                    closeMenuFunc();
+                }
+            });
+        }
+
+        // Function to open menu
+        function openMenu() {
+            if (sideMenu) {
+                sideMenu.classList.add("active");
+            }
+        }
+
+        // Function to close menu
+        function closeMenuFunc() {
+            if (sideMenu) {
+                sideMenu.classList.remove("active");
+            }
+        }
+    </script>
+
+</body>
+</html>
