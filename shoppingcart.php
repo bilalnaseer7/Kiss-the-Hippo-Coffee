@@ -1,8 +1,34 @@
 <?php
-// Set timezone to New York
+// connect to database on i6
+$path = "/home/bn2168/databases";
+$db = new SQLite3($path . "/users.db");
+
+// create table if it does not exist
+$db->exec("CREATE TABLE IF NOT EXISTS orders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    order_number TEXT,
+    customer_name TEXT,
+    email TEXT,
+    phone TEXT,
+    address TEXT,
+    address2 TEXT,
+    city TEXT,
+    state TEXT,
+    zipcode TEXT,
+    country TEXT,
+    subtotal TEXT,
+    shipping TEXT,
+    tax TEXT,
+    total TEXT,
+    cart_json TEXT,
+    date TEXT,
+    time TEXT
+)");
+
+// Set timezone
 date_default_timezone_set("America/New_York");
 
-// Get form data from POST - matching the HTML form field names
+// Get form data
 $customerName = $_POST['customer_name'];
 $email = $_POST['email'];
 $phone = $_POST['phone'];
@@ -25,15 +51,42 @@ $total = $_POST['total'];
 // Generate order number
 $orderNumber = rand(100000, 999999);
 
-// Get current date and time
+// Date and time
 $date = date("m/d/Y");
 $time = date("h:i A");
 
-// Mask card number - show only last 4 digits
+// Mask card number
 $lastFour = substr($cardNumber, -4);
 
 // Decode cart data from JSON
 $cartItems = json_decode($cartData, true);
+
+// -----------------------------------------------
+// INSERT ORDER INTO DATABASE (professor-style)
+// -----------------------------------------------
+$stmt = $db->prepare("INSERT INTO orders 
+(order_number, customer_name, email, phone, address, address2, city, state, zipcode, country, subtotal, shipping, tax, total, cart_json, date, time) 
+VALUES (:order_number, :customer_name, :email, :phone, :address, :address2, :city, :state, :zipcode, :country, :subtotal, :shipping, :tax, :total, :cart_json, :date, :time)");
+
+$stmt->bindValue(":order_number", $orderNumber, SQLITE3_TEXT);
+$stmt->bindValue(":customer_name", $customerName, SQLITE3_TEXT);
+$stmt->bindValue(":email", $email, SQLITE3_TEXT);
+$stmt->bindValue(":phone", $phone, SQLITE3_TEXT);
+$stmt->bindValue(":address", $address, SQLITE3_TEXT);
+$stmt->bindValue(":address2", $address2, SQLITE3_TEXT);
+$stmt->bindValue(":city", $city, SQLITE3_TEXT);
+$stmt->bindValue(":state", $state, SQLITE3_TEXT);
+$stmt->bindValue(":zipcode", $zipcode, SQLITE3_TEXT);
+$stmt->bindValue(":country", $country, SQLITE3_TEXT);
+$stmt->bindValue(":subtotal", $subtotal, SQLITE3_TEXT);
+$stmt->bindValue(":shipping", $shipping, SQLITE3_TEXT);
+$stmt->bindValue(":tax", $tax, SQLITE3_TEXT);
+$stmt->bindValue(":total", $total, SQLITE3_TEXT);
+$stmt->bindValue(":cart_json", $cartData, SQLITE3_TEXT);
+$stmt->bindValue(":date", $date, SQLITE3_TEXT);
+$stmt->bindValue(":time", $time, SQLITE3_TEXT);
+
+$stmt->execute();
 ?>
 
 <!DOCTYPE html>
@@ -231,7 +284,6 @@ $cartItems = json_decode($cartData, true);
 <a href="index.html" class="back-link">Return to Home</a>
 
 <script>
-    // Clear the cart after successful order
     localStorage.removeItem('cart');
 </script>
 
