@@ -1127,24 +1127,19 @@ img {
 }
 
 .hidden {
-    display: none; 
+    display: none !important; 
 }
 
 .active {
     display: block; 
 }
 
-#startscreen {
+#startscreen, #gameoverscreen {
     text-align: center; 
     align-items: center;
-}
-
-#gameoverscreen {
     display: flex; 
     flex-direction: column; 
     justify-content: center; 
-    text-align: center;
-    align-items: center; 
 }
 
 .game-title {
