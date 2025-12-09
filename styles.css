@@ -1136,6 +1136,8 @@ img {
 
 #startscreen, #gameoverscreen {
     text-align: center; 
+    align-items: center;
+    justify-content: space-between; 
 }
 
 .game-title {
