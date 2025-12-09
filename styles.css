@@ -1134,10 +1134,22 @@ img {
     display: block; 
 }
 
-#startscreen, #gameoverscreen {
+#startscreen {
     text-align: center; 
     align-items: center;
-    justify-content: space-between; 
+}
+
+#gameoverscreen {
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    text-align: center;
+    align-items: center; 
+}
+
+#restartbtn {
+    position: absolute; 
+    bottom: 50px; 
 }
 
 .game-title {
