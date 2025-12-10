@@ -137,16 +137,16 @@
     <section id="startscreen" class="hidden">
         <div class="game-header">
             <h2 class="game-title">Spot the Mug</h2>
-            <p class="game-intro">Take a little coffee break and test your abilities <br>Click on the different mug for a chance to win a bag of Christmas Blend coffee beans</p>
+            <p class="game-intro">Take a little coffee break and test your abilities<br>Click on the different mug for a chance to win a bag of Christmas Blend coffee beans</p>
 
-            <p>Choose your difficulty:</p>
+            <p class="difficulty-label">Choose your difficulty:</p>
             <select id="difficulty">
                 <option value="easy" selected>Easy (slow)</option>
                 <option value="medium">Medium (normal speed)</option>
                 <option value="hard">Hard (fast)</option>
             </select>
 
-            <button id="playbtn">Start</button>
+            <button id="playbtn">START</button>
         </div>
     </section>
 
@@ -175,13 +175,12 @@
         <ol id="board"></ol>
 
         <form id="boardform" class="hidden">
-            <label>New High Score! Please enter your name: 
-            <input id="name" type="text" placeholder="name" required>
-            </label>
-            <button type="submit">Submit</button>
+            <label for="name">New High Score! Please enter your name:</label>
+            <input id="name" type="text" placeholder="Enter your name" required>
+            <button type="submit">SUBMIT</button>
         </form>
 
-        <button id="restartbtn">Play Again!</button>
+        <button id="restartbtn">PLAY AGAIN</button>
     </section>
 
     <script src="script.js"></script>
