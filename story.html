@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiss the Hippo Coffee | Boldly Brewed</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .hero-img {
+            background-color: #3d3225;
+        }
+        .product-img {
+            background-color: #8B7355;
+        }
+        .mission-img {
+            background-color: #6b5d4d;
+        }
+
+        /* Newsletter popup styles */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .popup-overlay.hidden {
+            display: none;
+        }
+
+        .popup-content {
+            background-color: #F5F1EB;
+            padding: 50px 40px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            border: 1px solid #e0e0e0;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #1a1a1a;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .popup-close:hover {
+            color: #666;
+        }
+
+        .popup-title {
+            font-family: Georgia, "Times New Roman", Times, serif;
+            font-size: 28px;
+            font-weight: normal;
+            color: #1a1a1a;
+            margin: 0 0 15px 0;
+        }
+
+        .popup-text {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            color: #666;
+            margin: 0 0 30px 0;
+            line-height: 1.6;
+        }
+
+        .popup-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .popup-input {
+            width: 100%;
+            padding: 15px;
+            font-family: Georgia, "Times New Roman", Times, serif;
+            font-size: 15px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            color: #1a1a1a;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .popup-input:focus {
+            outline: none;
+            border-color: #8B7355;
+        }
+
+        .popup-submit {
+            width: 100%;
+            padding: 15px;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .popup-submit:hover {
+            background-color: #333;
+        }
+
+        .popup-note {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 11px;
+            color: #999;
+            margin: 20px 0 0 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Newsletter popup for email subscription -->
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-content">
+            <div class="popup-close" id="popupClose">✕</div>
+            <h2 class="popup-title">Join the Hippo Club</h2>
+            <p class="popup-text">Subscribe to our newsletter for exclusive offers, brewing tips, and first access to new roasts.</p>
+            
+            <form class="popup-form" action="subscription.php" method="POST">
+                <input type="email" id="popupEmail" name="email" class="popup-input" placeholder="Enter your email address" required>
+                <input type="submit" value="SUBSCRIBE" class="popup-submit">
+            </form>
+            
+            <p class="popup-note">No spam, ever. Unsubscribe anytime.</p>
+        </div>
+    </div>
+
+    <!-- Top Header Bar -->
+    <div class="top-header">
+        <div class="top-header-icons">
+            <div class="grid-icon">
+                <span class="grid-line"></span>
+                <span class="grid-line"></span>
+                <span class="grid-line"></span>
+                <span class="grid-line"></span>
+            </div>
+            <span class="header-separator">|</span>
+            <div class="circle-icon"></div>
+        </div>
+    </div>
+
+    <!-- Header / Navigation -->
+    <header class="header">
+        <div class="header-left">
+            <div class="menu-icon" id="menuToggle">
+                <span class="menu-line"></span>
+                <span class="menu-line"></span>
+                <span class="menu-line"></span>
+            </div>
+            <span class="shop-link">SHOP</span>
+        </div>
+
+        <div class="logo">
+            <a href="index.html">
+                <img src="images/logo.png" alt="Kiss the Hippo Logo" class="logo-img">
+                <span class="logo-text">KISS THE HIPPO</span>
+            </a>
+        </div>
+
+        <div class="header-right">
+            <div class="auth-links">
+                <a href="login.php" class="auth-link">Login</a>
+                <span class="auth-divider">|</span>
+                <a href="register.php" class="auth-link">Register</a>
+            </div>
+
+            <div class="cart-icon">
+                <img src="images/shoppingcart.svg" alt="Shopping Cart" class="cart-img">
+                <span class="cart-count">(0)</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Side Menu Overlay -->
+    <div class="side-menu-overlay" id="sideMenu">
+        <div class="side-menu-content">
+            <div class="side-menu-header">
+                <div class="side-menu-logo">
+                    <a href="index.html">
+                        <img src="images/logo.png" alt="Kiss the Hippo Logo" class="mountain-logo">
+                    </a>
+                </div>
+                <div class="side-menu-header-icons">
+                    <div class="search-icon" id="searchicon">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="8" cy="8" r="6" stroke="#1a1a1a" stroke-width="1.5" fill="none"/>
+                            <path d="M13 13L16 16" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <!--search bar php form-->
+                    <form action="search.php" method="GET" id="searchform">
+                        <input type="text" name="searchterm" placeholder="Find something..." class="usersearch"> 
+                    </form>
+                    <div class="cart-icon-menu">
+                        <img src="images/shoppingcart.svg" alt="Shopping Cart" class="cart-img">
+                        <span class="cart-count">(0)</span>
+                    </div>
+                    <div class="close-icon" id="closeMenu">✕</div>
+                </div>
+            </div>
+
+            <nav class="side-menu-nav">
+                <a href="coffeebean.html" class="nav-link">Shop Coffee</a>
+                <a href="menu.html" class="nav-link">Menu</a>
+                <a href="franchise.php" class="nav-link">Franchise Opportunities</a>
+                <a href="story.html" class="nav-link">Our Story</a>
+                <a href="game.html" class="nav-link">Spot the Mug</a>
+            </nav>
+
+            <div class="side-menu-footer">
+                <div class="currency-selector">
+                    <span>United States (USD $)</span>
+                    <span class="chevron">▼</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar Overlay -->
+    <div class="cart-sidebar-overlay" id="cartSidebar">
+        <div class="cart-sidebar-content">
+            <div class="cart-sidebar-header">
+                <h2 class="cart-sidebar-title">Your cart</h2>
+                <div class="cart-close-icon" id="closeCart">✕</div>
+            </div>
+            <div class="cart-items-container" id="cartItemsContainer">
+                <!-- Cart items are added here by JavaScript -->
+            </div>
+            <div class="cart-sidebar-footer">
+                <div class="cart-subtotal">
+                    <span class="cart-subtotal-label">Subtotal</span>
+                    <span class="cart-subtotal-amount" id="cartSubtotal">$0.00 USD</span>
+                </div>
+                <p class="cart-tax-note">Tax included. Shipping calculated at checkout.</p>
+                <a href="shoppingcart.html" class="cart-checkout-btn">CHECK OUT</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Kiss the Hippo</h1>
+            <p class="hero-tagline">Our own story of the journey</p>
+        </div>
+
+        <div class="hero-images">
+            <div class="hero-image-left">
+                <div class="hero-img" style="background-image: url('images/sip2.jpg'); background-size: cover; background-repeat: no-repeat;"></div>
+                <p class="hero-image-text">Client-end<br>Features</p>
+            </div>
+            <div class="hero-image-right">
+                <div class="hero-img" style="background-image: url('images/coffee_world.jpg'); background-size: cover; background-repeat: no-repeat;"></div>
+                <p class="hero-image-text">Server-side<br>Features</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section id="difference" class="difference-section">
+        <div class="difference-header">
+            <h2 class="difference-title">From CSS to PHP</h2>
+            <p class="difference-intro">We wanted to create an online platform for a coffee shop, where users can browse our menu, buy coffee beans, and play a little game while waiting for their coffee order. Moreover, we wanted to give users a peek into our elegant cafe style even without visiting our locations.</p>
+        </div>
+
+        <div class="difference-cards">
+            <div class="difference-card difference-card-first">
+                <h3 class="card-title">Summary</h3>
+                <p class="card-text">6 working PHP progams and 12 HTML pages with our very own CSS design</p>
+            </div>
+
+            <div class="difference-card">
+                <h3 class="card-title">Client-end Features</h3>
+                <p class="card-text">We have built a main homepage, a menu page, coffee beans page, six different coffee bean description pages, a story page, and an interactive game page for users.</p>
+            </div>
+
+            <div class="difference-card">
+                <h3 class="card-title">Server-side Features</h3>
+                <p class="card-text">We have built a shopping cart PHP, a login PHP, a register PHP, a subscribe to our cafe PHP, a search functionality PHP, and a inquire about franchise PHP.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section id="products" class="products-section">
+        <div class="products-header">
+            <h2 class="products-title">Explore Our Collection</h2>
+            <p class="products-intro">From single-origin beans to premium brewing gear, find everything you need for the perfect cup.</p>
+        </div>
+
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-image">
+                    <div class="product-img" style="background-image: url('images/beans.jpg'); background-size: cover; background-repeat: no-repeat;"></div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Coffee Beans</h3>
+                    <p class="product-desc">Single-origin and signature blends, freshly roasted for maximum flavor.</p>
+                    <a href="coffeebean.html" class="product-link">Shop Beans</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <div class="product-img" style="background-image: url('images/brewing.jpg'); background-size: cover; background-repeat: no-repeat;"></div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Brewing Equipment</h3>
+                    <p class="product-desc">Pour-overs, French presses, grinders, and tools for the home barista.</p>
+                    <a href="coffeebean.html" class="product-link">Shop Equipment</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <div class="product-img" style="background-image: url('images/game2.jpg'); background-size: cover; background-repeat: no-repeat;"></div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Game</h3>
+                    <p class="product-desc">Play game to reveal rewards.</p>
+                    <a href="game.html" class="product-link">Play Game</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span class="footer-logo">KISS THE HIPPO</span>
+                <p class="footer-tagline">Boldly Brewed Since 2020</p>
+            </div>
+
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4 class="footer-heading">Shop</h4>
+                    <p class="footer-link">Coffee Beans</p>
+                    <p class="footer-link">Equipment</p>
+                    <p class="footer-link">Merchandise</p>
+                    <p class="footer-link"><a href="franchise.php" style="color: inherit; text-decoration: none;">Franchise Opportunities</a></p>
+                </div>
+
+                <div class="footer-column">
+                    <h4 class="footer-heading">About</h4>
+                    <p class="footer-link">Our Story</p>
+                    <p class="footer-link">Sustainability</p>
+                    <p class="footer-link">Press</p>
+                    <p class="footer-link"><a href="franchise.php" style="color: inherit; text-decoration: none;">Franchise Opportunities</a></p>
+                </div>
+
+                <div class="footer-column">
+                    <h4 class="footer-heading">Help</h4>
+                    <p class="footer-link">Contact Us</p>
+                    <p class="footer-link">FAQs</p>
+                    <p class="footer-link">Shipping</p>
+                    <p class="footer-link">Returns</p>
+                </div>
+            </div>
+
+            <div class="footer-social">
+                <span class="social-icon">Instagram</span>
+                <span class="social-icon">Twitter</span>
+                <span class="social-icon">Facebook</span>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p class="copyright">© 2025 Kiss the Hippo Coffee. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Newsletter popup - handles showing and closing the subscription popup
+        const popupOverlay = document.getElementById("popupOverlay");
+        const popupClose = document.getElementById("popupClose");
+
+        popupClose.addEventListener("click", closePopup);
+        popupOverlay.addEventListener("click", closeOnOverlayClick);
+
+        function closePopup() {
+            popupOverlay.classList.add("hidden");
+        }
+
+        function closeOnOverlayClick(event) {
+            if (event.target.id === "popupOverlay") {
+                popupOverlay.classList.add("hidden");
+            }
+        }
+
+        // Cart functionality - load cart from localStorage
+        let cart = [];
+        let cartData = localStorage.getItem("cart");
+        if (cartData !== null) {
+            cart = JSON.parse(cartData);
+        }
+
+        // Get all the cart elements we need
+        const cartIcon = document.querySelector(".cart-icon");
+        const cartIconMenu = document.querySelector(".cart-icon-menu");
+        const cartSidebar = document.getElementById("cartSidebar");
+        const closeCart = document.getElementById("closeCart");
+        const cartItemsContainer = document.getElementById("cartItemsContainer");
+        const cartSubtotalDisplay = document.getElementById("cartSubtotal");
+
+        // Open/close cart sidebar
+        if (cartIcon) {
+            cartIcon.addEventListener("click", openCart);
+        }
+        if (cartIconMenu) {
+            cartIconMenu.addEventListener("click", openCart);
+        }
+        if (closeCart) {
+            closeCart.addEventListener("click", closeCartFunc);
+        }
+        if (cartSidebar) {
+            cartSidebar.addEventListener("click", function(event) {
+                if (event.target.id === "cartSidebar") {
+                    closeCartFunc();
+                }
+            });
+        }
+
+        function openCart() {
+            if (cartSidebar) {
+                cartSidebar.classList.add("active");
+            }
+        }
+
+        function closeCartFunc() {
+            if (cartSidebar) {
+                cartSidebar.classList.remove("active");
+            }
+        }
+
+        // Update the cart count in the header
+        function updateCartCount() {
+            let totalItems = 0;
+            for (let i = 0; i < cart.length; i++) {
+                totalItems = totalItems + cart[i].quantity;
+            }
+
+            let cartCountElements = document.querySelectorAll(".cart-count");
+            for (let i = 0; i < cartCountElements.length; i++) {
+                cartCountElements[i].innerHTML = "(" + totalItems + ")";
+            }
+        }
+
+        // Add item to cart - checks if item already exists and updates quantity
+        function addToCart(item) {
+            let existingItem = null;
+
+            // Check if this item is already in the cart
+            for (let i = 0; i < cart.length; i++) {
+                if (cart[i].id === item.id && cart[i].bagSize === item.bagSize && cart[i].grind === item.grind) {
+                    existingItem = cart[i];
+                    break;
+                }
+            }
+
+            if (existingItem !== null) {
+                existingItem.quantity = existingItem.quantity + item.quantity;
+            } else {
+                cart.push(item);
+            }
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCartCount();
+            renderCart();
+        }
+
+        // Remove item from cart
+        function removeFromCart(itemId, bagSize, grind) {
+            let newCart = [];
+
+            // Loop through cart and only keep items we don't want to remove
+            for (let i = 0; i < cart.length; i++) {
+                let item = cart[i];
+                let shouldRemove = false;
+
+                // Equipment items don't have bagSize or grind
+                if ((bagSize === "" || bagSize === null || bagSize === undefined) && (grind === "" || grind === null || grind === undefined)) {
+                    if (item.id === itemId && !item.bagSize && !item.grind) {
+                        shouldRemove = true;
+                    }
+                } else {
+                    // Coffee items have bagSize and grind
+                    if (item.id === itemId && item.bagSize === bagSize && item.grind === grind) {
+                        shouldRemove = true;
+                    }
+                }
+
+                if (shouldRemove === false) {
+                    newCart.push(item);
+                }
+            }
+
+            cart = newCart;
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCartCount();
+            renderCart();
+        }
+
+        // Update quantity of an item in the cart
+        function updateQuantity(itemId, bagSize, grind, newQuantity) {
+            let foundItem = null;
+
+            // Find the item in the cart
+            for (let i = 0; i < cart.length; i++) {
+                let item = cart[i];
+
+                // Equipment items don't have bagSize or grind
+                if ((bagSize === "" || bagSize === null || bagSize === undefined) && (grind === "" || grind === null || grind === undefined)) {
+                    if (item.id === itemId && !item.bagSize && !item.grind) {
+                        foundItem = item;
+                        break;
+                    }
+                } else {
+                    // Coffee items have bagSize and grind
+                    if (item.id === itemId && item.bagSize === bagSize && item.grind === grind) {
+                        foundItem = item;
+                        break;
+                    }
+                }
+            }
+
+            if (foundItem !== null) {
+                if (newQuantity <= 0) {
+                    removeFromCart(itemId, bagSize, grind);
+                } else {
+                    foundItem.quantity = newQuantity;
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    updateCartCount();
+                    renderCart();
+                }
+            }
+        }
+
+        // Display all cart items in the sidebar
+        function renderCart() {
+            if (!cartItemsContainer) {
+                return;
+            }
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = "<div class='cart-empty'>Your cart is empty</div>";
+                cartSubtotalDisplay.innerHTML = "$0.00 USD";
+                return;
+            }
+
+            let html = "";
+            let subtotal = 0;
+
+            // Build HTML for each item using string concatenation
+            for (let i = 0; i < cart.length; i++) {
+                let item = cart[i];
+                let itemPrice = parseFloat(item.price);
+                let itemQty = parseFloat(item.quantity);
+                let itemTotal = itemPrice * itemQty;
+                subtotal = subtotal + itemTotal;
+
+                html = html + "<div class='cart-item'>";
+                html = html + "<img src='" + item.image + "' alt='" + item.name + "' class='cart-item-image' onerror=\"this.style.backgroundColor='#8B7355'\">";
+                html = html + "<div class='cart-item-details'>";
+                html = html + "<h3 class='cart-item-name'>" + item.name + "</h3>";
+                html = html + "<p class='cart-item-price'>$" + itemPrice.toFixed(2) + " USD</p>";
+
+                if (item.bagSize) {
+                    html = html + "<p class='cart-item-options'>Size: " + item.bagSize + "</p>";
+                }
+
+                if (item.grind) {
+                    html = html + "<p class='cart-item-options'>Grind: " + item.grind + "</p>";
+                }
+
+                // Quantity buttons
+                let bagSizeVal = item.bagSize || "";
+                let grindVal = item.grind || "";
+
+                html = html + "<div class='cart-item-quantity'>";
+                html = html + "<button class='quantity-btn' onclick=\"updateQuantity('" + item.id + "', '" + bagSizeVal + "', '" + grindVal + "', " + (item.quantity - 1) + ")\">−</button>";
+                html = html + "<span class='quantity-value'>" + item.quantity + "</span>";
+                html = html + "<button class='quantity-btn' onclick=\"updateQuantity('" + item.id + "', '" + bagSizeVal + "', '" + grindVal + "', " + (item.quantity + 1) + ")\">+</button>";
+                html = html + "</div>";
+
+                html = html + "<button class='cart-item-remove' onclick=\"removeFromCart('" + item.id + "', '" + bagSizeVal + "', '" + grindVal + "')\">Remove</button>";
+
+                html = html + "</div>";
+                html = html + "</div>";
+            }
+
+            cartItemsContainer.innerHTML = html;
+            cartSubtotalDisplay.innerHTML = "$" + subtotal.toFixed(2) + " USD";
+        }
+
+        // Make these functions available globally so other pages can use them
+        window.addToCart = addToCart;
+        window.removeFromCart = removeFromCart;
+        window.updateQuantity = updateQuantity;
+
+        // Show cart when page loads
+        updateCartCount();
+        renderCart();
+
+        // Side menu toggle functionality
+        const menuToggle = document.getElementById("menuToggle");
+        const sideMenu = document.getElementById("sideMenu");
+        const closeMenu = document.getElementById("closeMenu");
+
+        if (menuToggle) {
+            menuToggle.addEventListener("click", openMenu);
+        }
+        if (closeMenu) {
+            closeMenu.addEventListener("click", closeMenuFunc);
+        }
+        if (sideMenu) {
+            sideMenu.addEventListener("click", function(event) {
+                if (event.target.id === "sideMenu") {
+                    closeMenuFunc();
+                }
+            });
+        }
+
+        function openMenu() {
+            if (sideMenu) {
+                sideMenu.classList.add("active");
+            }
+        }
+
+        function closeMenuFunc() {
+            if (sideMenu) {
+                sideMenu.classList.remove("active");
+            }
+        }
+        
+        //DOM for search icon & form 
+        const searchicon = document.getElementById('searchicon');
+        const searchform = document.getElementById('searchform'); 
+
+        //if search icon clicked
+        searchicon.addEventListener('click', function(){
+            const usersearch = searchform.querySelector('.usersearch');
+
+            if (usersearch.value.trim() !== ''){
+                searchform.submit(); 
+            }
+            else{
+                usersearch.focus(); 
+            }
+        })
+    </script>
+
+</body>
+</html>
